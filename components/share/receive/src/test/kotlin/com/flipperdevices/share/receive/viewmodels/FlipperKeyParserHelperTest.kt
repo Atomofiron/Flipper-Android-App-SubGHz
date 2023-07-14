@@ -2,6 +2,7 @@ package com.flipperdevices.share.receive.viewmodels
 
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyCrypto
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkContent
@@ -130,26 +131,6 @@ class FlipperKeyParserHelperTest {
     }
 
     @Test
-    fun `Flipper key deeplink with FFF content and nullable path`() = runTest {
-        // Initialize
-        val deeplink = Deeplink.FlipperKey(
-            path = null,
-            content = mockk()
-        )
-
-        // Actions
-        val resultParse = flipperKeyParserHelper.toFlipperKey(deeplink)
-        val exception = resultParse.exceptionOrNull()
-
-        // Assertions
-        Assert.assertTrue(resultParse.isFailure)
-        when (exception) {
-            null -> Assert.fail("Exception is null")
-            else -> Assert.assertTrue(exception is FlipperKeyParseException)
-        }
-    }
-
-    @Test
     fun `Flipper key deeplink with FFF content`() = runTest {
         // Initialize
         val path = FlipperFilePath(
@@ -216,26 +197,6 @@ class FlipperKeyParserHelperTest {
     }
 
     @Test
-    fun `Flipper key deeplink with crypto storage content and nullable path`() = runTest {
-        // Initialize
-        val deeplink = Deeplink.FlipperKey(
-            path = null,
-            content = mockk()
-        )
-
-        // Actions
-        val resultParse = flipperKeyParserHelper.toFlipperKey(deeplink)
-        val exception = resultParse.exceptionOrNull()
-
-        // Assertions
-        Assert.assertTrue(resultParse.isFailure)
-        when (exception) {
-            null -> Assert.fail("Exception is null")
-            else -> Assert.assertTrue(exception is FlipperKeyParseException)
-        }
-    }
-
-    @Test
     fun `Flipper key deeplink with crypto storage content`() = runTest {
         // Initialize
         val rawData = ByteArray(5) { 1 }
@@ -259,7 +220,7 @@ class FlipperKeyParserHelperTest {
                 key = cryptoKey.cryptoKey,
                 name = "test.test"
             )
-        } returns Result.success(rawData)
+        } returns Result.success(FlipperKeyContent.RawData(rawData))
 
         // Actions
         val resultParse = flipperKeyParserHelper.toFlipperKey(deeplink)

@@ -1,7 +1,6 @@
 plugins {
     id("flipper.android-lib")
-    id("com.squareup.anvil")
-    id("kotlin-kapt")
+    id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.deeplink.impl"
@@ -13,6 +12,7 @@ dependencies {
     implementation(projects.components.core.ktx)
 
     implementation(projects.components.bridge.dao.api)
+    implementation(projects.components.keyparser.api)
 
     implementation(projects.components.deeplink.api)
     implementation(projects.components.filemanager.api)
@@ -22,8 +22,4 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.kotlin.coroutines)
     implementation(libs.compose.navigation)
-
-    // Dagger deps
-    implementation(libs.dagger)
-    kapt(libs.dagger.kapt)
 }

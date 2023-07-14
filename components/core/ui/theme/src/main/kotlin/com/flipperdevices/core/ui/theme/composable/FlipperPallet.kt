@@ -48,7 +48,7 @@ data class FlipperPallet(
     val shareSheetScrimColor: Color,
 
     val flipperDisableButton: Color,
-    val borderViewReportBug: Color,
+    val reportBorder: Color,
 
     val fapHubSwitchBackground: Color,
     val fapHubSelectedBackgroundColor: Color,
@@ -58,6 +58,13 @@ data class FlipperPallet(
     val fapHubActiveColor: Color = text100,
     val fapHubInactiveColor: Color = text40,
     val fapHubDeleteDialogBackground: Color,
+
+    val fapHubBuildStatusReadyBackground: Color,
+    val fapHubBuildStatusReadyText: Color,
+    val fapHubBuildStatusRebuildingBackground: Color,
+    val fapHubBuildStatusRebuildingText: Color,
+    val fapHubBuildStatusFailedBackground: Color,
+    val fapHubBuildStatusFailedText: Color,
 
     val screenStreamingBorderColor: Color,
     val screenStreamingNotConnectedColor: Color
@@ -139,6 +146,8 @@ data class FlipperPallet(
 
     val fapHubIndicationColor: Color = Color(0xFFFFFFFF)
     val fapScreenshotBorder: Color = Color(0xFF000000)
+    val fapHubOnIcon: Color = Color(0xFF000000)
+    val fapHubBuildStatusInfo: Color = Color(0xFF919191)
 
     val onFapHubInstallButton: Color = Color(0xFFFFFFFF)
 

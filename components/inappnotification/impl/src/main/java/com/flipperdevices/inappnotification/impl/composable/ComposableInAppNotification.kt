@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.inappnotification.api.model.InAppNotification
+import com.flipperdevices.inappnotification.impl.composable.type.ComposableInAppNotificationReportApp
 import com.flipperdevices.inappnotification.impl.composable.type.ComposableInAppNotificationSavedKey
 import com.flipperdevices.inappnotification.impl.composable.type.ComposableInAppNotificationUpdateReady
 import kotlin.math.max
@@ -46,6 +47,7 @@ private fun ComposableInAppNotificationCard(
     modifier: Modifier = Modifier
 ) {
     var visibleState by remember { mutableStateOf(false) }
+    var actionClicked by remember { mutableStateOf(false) }
     LaunchedEffect(notification) {
         visibleState = true
     }
@@ -66,9 +68,15 @@ private fun ComposableInAppNotificationCard(
                 is InAppNotification.SavedKey -> {
                     ComposableInAppNotificationSavedKey(notification)
                 }
+
                 is InAppNotification.UpdateReady -> {
-                    ComposableInAppNotificationUpdateReady(notification)
+                    ComposableInAppNotificationUpdateReady(notification) {
+                        visibleState = false
+                        actionClicked = true
+                    }
                 }
+
+                InAppNotification.ReportApp -> ComposableInAppNotificationReportApp()
             }
         }
     }
@@ -79,7 +87,9 @@ private fun ComposableInAppNotificationCard(
             visibleState = false
         }
         val hiddenRunnable = {
-            onNotificationHidden()
+            if (!actionClicked) {
+                onNotificationHidden()
+            }
         }
 
         handler.postDelayed(

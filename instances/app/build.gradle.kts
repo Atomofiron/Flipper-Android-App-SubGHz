@@ -64,11 +64,16 @@ dependencies {
 
     implementation(projects.components.keyscreen.api)
     implementation(projects.components.keyscreen.impl)
-    implementation(projects.components.keyscreen.emulate)
     implementation(projects.components.keyscreen.shared)
 
     implementation(projects.components.keyedit.api)
     implementation(projects.components.keyedit.impl)
+
+    implementation(projects.components.keyemulate.api)
+    implementation(projects.components.keyemulate.impl)
+
+    implementation(projects.components.keyparser.api)
+    implementation(projects.components.keyparser.impl)
 
     implementation(projects.components.inappnotification.api)
     implementation(projects.components.inappnotification.impl)
@@ -178,8 +183,14 @@ dependencies {
     implementation(projects.components.faphub.target.api)
     implementation(projects.components.faphub.target.impl)
 
+    implementation(projects.components.faphub.report.api)
+    implementation(projects.components.faphub.report.impl)
+
     implementation(projects.components.faphub.installedtab.api)
     implementation(projects.components.faphub.installedtab.impl)
+
+    implementation(projects.components.faphub.uninstallbutton.api)
+    implementation(projects.components.faphub.uninstallbutton.impl)
 
     implementation(projects.components.faphub.utils)
 
@@ -197,6 +208,9 @@ dependencies {
             implementation(projects.components.selfupdater.thirdparty.api)
             implementation(projects.components.selfupdater.thirdparty.fdroid)
         }
+        SourceInstall.DEBUG -> {
+            implementation(projects.components.selfupdater.debug)
+        }
         else -> {
             implementation(projects.components.selfupdater.unknown)
         }
@@ -209,10 +223,10 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.work.ktx)
-    implementation(libs.retrofit)
+    implementation(libs.ktorfit.lib)
 
-    implementation(libs.compose.coil.svg)
-    implementation(libs.compose.coil)
+    implementation(libs.coil.svg)
+    implementation(libs.coil.compose)
     implementation(libs.compose.pager)
 
     implementation(libs.kotlin.coroutines)

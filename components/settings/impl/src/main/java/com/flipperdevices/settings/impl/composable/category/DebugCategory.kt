@@ -85,14 +85,15 @@ private fun DebugCategoryItems(
         onSwitchState = debugViewModel::onSwitchSkipAutoSync
     )
     GrayDivider()
-    ClickableElement(
-        titleId = R.string.debug_open_mfkey32,
-        onClick = { debugViewModel.openMfKey32(navController) }
+    SwitchableElement(
+        titleId = R.string.debug_application_catalog_dev,
+        state = settings.useDevCatalog,
+        onSwitchState = debugViewModel::onSwitchFapHubDev
     )
     GrayDivider()
     SwitchableElement(
-        titleId = R.string.experimental_application_catalog,
-        state = settings.applicationCatalog,
-        onSwitchState = debugViewModel::onSwitchApplicationCatalog
+        titleId = R.string.debug_selfupdater,
+        state = settings.selfUpdaterDebug,
+        onSwitchState = debugViewModel::onSwitchSelfUpdaterDebug
     )
 }

@@ -1,7 +1,6 @@
 plugins {
     id("flipper.android-compose")
-    id("com.squareup.anvil")
-    id("kotlin-kapt")
+    id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.share.uploader"
@@ -10,6 +9,7 @@ dependencies {
     implementation(projects.components.analytics.metric.api)
     implementation(projects.components.share.api)
     implementation(projects.components.bridge.dao.api)
+    implementation(projects.components.keyparser.api)
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
@@ -20,6 +20,8 @@ dependencies {
     implementation(projects.components.core.ui.navigation)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.share)
+
+    implementation(projects.components.keyedit.api)
 
     implementation(libs.appcompat)
 
@@ -38,9 +40,6 @@ dependencies {
     implementation(libs.compose.navigation)
 
     // Dagger deps
-    implementation(libs.dagger)
-    implementation(project(mapOf("path" to ":components:keyedit:api")))
-    kapt(libs.dagger.kapt)
     implementation(libs.tangle.viewmodel.compose)
     implementation(libs.tangle.viewmodel.api)
     anvil(libs.tangle.viewmodel.compiler)

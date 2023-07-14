@@ -1,7 +1,6 @@
 plugins {
     id("flipper.android-compose")
-    id("com.squareup.anvil")
-    id("kotlin-kapt")
+    id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.faphub.category.impl"
@@ -22,6 +21,7 @@ dependencies {
     implementation(projects.components.faphub.appcard.composable)
     implementation(projects.components.faphub.fapscreen.api)
     implementation(projects.components.faphub.installation.button.api)
+    implementation(projects.components.faphub.target.api)
 
     // Compose
     implementation(libs.compose.ui)
@@ -34,8 +34,6 @@ dependencies {
     implementation(libs.kotlin.serialization.json)
 
     // Dagger deps
-    implementation(libs.dagger)
-    kapt(libs.dagger.kapt)
     implementation(libs.tangle.viewmodel.compose)
     implementation(libs.tangle.viewmodel.api)
     anvil(libs.tangle.viewmodel.compiler)

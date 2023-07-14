@@ -11,15 +11,20 @@ sealed class FapState {
     object Installed : FapState()
 
     object ReadyToInstall : FapState()
+    object ConnectFlipper : FapState()
+
+    class NotAvailableForInstall(val reason: NotAvailableReason) : FapState()
 
     data class ReadyToUpdate(val from: FapManifestItem) : FapState()
 
     data class InstallationInProgress(
+        val active: Boolean,
         @FloatRange(from = 0.0, to = 1.0)
         val progress: Float
     ) : FapState()
 
     data class UpdatingInProgress(
+        val active: Boolean,
         @FloatRange(from = 0.0, to = 1.0)
         val progress: Float
     ) : FapState()
@@ -27,4 +32,11 @@ sealed class FapState {
     object Deleting : FapState()
 
     object Canceling : FapState()
+}
+
+enum class NotAvailableReason {
+    BUILD_RUNNING,
+    UNSUPPORTED_APP,
+    FLIPPER_OUTDATED,
+    UNSUPPORTED_SDK
 }

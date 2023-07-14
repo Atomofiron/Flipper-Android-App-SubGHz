@@ -32,14 +32,16 @@ dependencies {
     implementation(projects.components.wearable.sync.wear.impl)
     implementation(projects.components.wearable.theme)
 
-    implementation(projects.components.keyscreen.api)
-    implementation(projects.components.keyscreen.emulate)
+    implementation(projects.components.keyparser.api)
+    implementation(projects.components.keyparser.noop)
+
+    implementation(projects.components.keyemulate.api)
+    implementation(projects.components.keyemulate.impl)
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.service.noop)
     implementation(projects.components.bridge.synchronization.api)
     implementation(projects.components.bridge.synchronization.stub)
     implementation(projects.components.bridge.dao.api)
-    implementation(projects.components.bridge.dao.noop)
 
     implementation(libs.appcompat)
     implementation(libs.timber)

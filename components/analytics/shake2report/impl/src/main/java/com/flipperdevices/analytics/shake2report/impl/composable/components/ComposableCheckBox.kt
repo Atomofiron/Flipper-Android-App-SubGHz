@@ -27,15 +27,15 @@ internal fun ComposableCheckBox(
     /*
     Disable padding for checkbox
     https://stackoverflow.com/a/71609165
- */
+     */
     CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
         Checkbox(
             checked = checked,
             onCheckedChange = onCheckedChange,
             colors = CheckboxColors(
                 checkedCheckmarkColor = LocalPallet.current.accent,
-                checkedBorderColor = LocalPallet.current.borderViewReportBug,
-                uncheckedBorderColor = LocalPallet.current.borderViewReportBug,
+                checkedBorderColor = LocalPallet.current.reportBorder,
+                uncheckedBorderColor = LocalPallet.current.reportBorder,
             ),
             interactionSource = remember { MutableInteractionSource() }
         )

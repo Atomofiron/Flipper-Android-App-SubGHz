@@ -42,7 +42,6 @@ include(
     ":components:bridge:synchronization:ui",
     ":components:bridge:dao:api",
     ":components:bridge:dao:impl",
-    ":components:bridge:dao:noop",
 
     ":components:filemanager:api",
     ":components:filemanager:impl",
@@ -111,8 +110,14 @@ include(
 
     ":components:keyscreen:api",
     ":components:keyscreen:impl",
-    ":components:keyscreen:emulate",
     ":components:keyscreen:shared",
+
+    ":components:keyemulate:api",
+    ":components:keyemulate:impl",
+
+    ":components:keyparser:api",
+    ":components:keyparser:impl",
+    ":components:keyparser:noop",
 
     ":components:keyedit:api",
     ":components:keyedit:impl",
@@ -187,6 +192,8 @@ include(
     ":components:faphub:search:impl",
     ":components:faphub:category:api",
     ":components:faphub:category:impl",
+    ":components:faphub:uninstallbutton:api",
+    ":components:faphub:uninstallbutton:impl",
     ":components:faphub:fapscreen:api",
     ":components:faphub:fapscreen:impl",
     ":components:faphub:installation:button:api",
@@ -200,10 +207,13 @@ include(
     ":components:faphub:target:api",
     ":components:faphub:target:impl",
     ":components:faphub:utils",
+    ":components:faphub:report:api",
+    ":components:faphub:report:impl",
 
     ":components:selfupdater:api",
     ":components:selfupdater:googleplay",
     ":components:selfupdater:unknown",
+    ":components:selfupdater:debug",
     ":components:selfupdater:thirdparty:api",
     ":components:selfupdater:thirdparty:github",
     ":components:selfupdater:thirdparty:fdroid",

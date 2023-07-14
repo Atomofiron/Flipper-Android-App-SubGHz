@@ -1,7 +1,6 @@
 plugins {
     id("flipper.android-compose")
-    id("com.squareup.anvil")
-    id("kotlin-kapt")
+    id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.hub.impl"
@@ -22,6 +21,7 @@ dependencies {
 
     implementation(projects.components.nfc.attack.api)
     implementation(projects.components.screenstreaming.api)
+    implementation(projects.components.deeplink.api)
 
     // Compose
     implementation(libs.compose.ui)
@@ -32,8 +32,6 @@ dependencies {
     implementation(libs.kotlin.immutable.collections)
 
     // Dagger deps
-    implementation(libs.dagger)
-    kapt(libs.dagger.kapt)
     implementation(libs.tangle.viewmodel.compose)
     implementation(libs.tangle.viewmodel.api)
     anvil(libs.tangle.viewmodel.compiler)

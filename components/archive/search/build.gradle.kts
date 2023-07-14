@@ -1,7 +1,6 @@
 plugins {
     id("flipper.android-compose")
-    id("com.squareup.anvil")
-    id("kotlin-kapt")
+    id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.archive.search"
@@ -10,6 +9,7 @@ dependencies {
     implementation(projects.components.archive.api)
     implementation(projects.components.archive.shared)
     implementation(projects.components.keyscreen.api)
+    implementation(projects.components.keyparser.api)
 
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.synchronization.api)
@@ -21,6 +21,8 @@ dependencies {
     implementation(projects.components.core.ui.searchbar)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.navigation)
+
+    implementation(projects.components.keyscreen.api)
 
     implementation(libs.appcompat)
 
@@ -38,9 +40,6 @@ dependencies {
     implementation(libs.kotlin.immutable.collections)
 
     // Dagger deps
-    implementation(libs.dagger)
-    implementation(project(mapOf("path" to ":components:keyscreen:api")))
-    kapt(libs.dagger.kapt)
     implementation(libs.tangle.viewmodel.compose)
     implementation(libs.tangle.viewmodel.api)
     anvil(libs.tangle.viewmodel.compiler)

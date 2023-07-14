@@ -2,55 +2,66 @@ package com.flipperdevices.faphub.dao.network.api
 
 import android.content.Context
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.ktx.jre.copyTo
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.core.progress.ProgressListener
 import com.flipperdevices.core.progress.ProgressWrapperTracker
 import com.flipperdevices.faphub.dao.api.FapDownloadApi
-import com.flipperdevices.faphub.dao.network.retrofit.api.RetrofitBundleApi
-import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
+import com.flipperdevices.faphub.dao.network.ktorfit.api.KtorfitBundleApi
+import com.flipperdevices.faphub.target.model.FlipperTarget
 import com.squareup.anvil.annotations.ContributesBinding
-import okhttp3.ResponseBody
+import io.ktor.client.call.body
+import io.ktor.client.statement.HttpResponse
+import io.ktor.http.contentLength
+import io.ktor.utils.io.ByteReadChannel
+import io.ktor.utils.io.core.isEmpty
+import io.ktor.utils.io.core.readBytes
 import java.io.File
 import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, FapDownloadApi::class)
 class FapDownloadApiImpl @Inject constructor(
-    private val bundleApi: RetrofitBundleApi,
-    private val flipperTargetApi: FlipperTargetProviderApi,
+    private val bundleApi: KtorfitBundleApi,
     private val context: Context
 ) : FapDownloadApi, LogTagProvider {
     override val TAG = "FapDownloadApi"
 
     override suspend fun downloadBundle(
-        versionId: String,
+        target: FlipperTarget.Received,
+        versionUid: String,
         listener: ProgressListener?
     ): File {
-        info { "Start download bundle for $versionId" }
-        val target = flipperTargetApi.getFlipperTargetSync().getOrThrow()
+        info { "Start download bundle for $versionUid and $target" }
 
         val file = FlipperStorageProvider.getTemporaryFile(context)
 
-        bundleApi.downloadBundle(versionId, target.target, target.sdk.toString())
-            .saveToFile(file, listener?.let { ProgressWrapperTracker(it) })
-        info { "Complete download for $versionId" }
+        bundleApi
+            .downloadBundle(versionUid, target.target, target.sdk.toString())
+            .execute { response ->
+                response.saveToFile(file, listener?.let { ProgressWrapperTracker(it) })
+            }
+
+        info { "Complete download for $versionUid" }
 
         return file
     }
 }
 
-private suspend fun ResponseBody.saveToFile(
+private suspend fun HttpResponse.saveToFile(
     file: File,
     listener: ProgressWrapperTracker?
-) = byteStream().use { streamFromNetwork ->
-    file.outputStream().use { fileStream ->
-        val totalBytes = contentLength()
-        streamFromNetwork.copyTo(fileStream, onProcessed = { bytesSentTotal ->
-            if (totalBytes > 0) {
-                listener?.report(bytesSentTotal, totalBytes)
+) {
+    val channel: ByteReadChannel = body()
+    val totalBytes = contentLength()
+    while (!channel.isClosedForRead) {
+        val packet = channel.readRemaining(DEFAULT_BUFFER_SIZE.toLong())
+        while (!packet.isEmpty) {
+            val bytes = packet.readBytes()
+            file.appendBytes(bytes)
+            if (totalBytes != null && totalBytes > 0) {
+                listener?.report(file.length(), totalBytes)
             }
-        })
+        }
     }
 }

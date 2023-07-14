@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
@@ -28,9 +29,9 @@ fun ColumnScope.ComposableDeveloperFooter(
     modifier: Modifier = Modifier
 ) {
     Text(
-        modifier = modifier.padding(bottom = 8.dp, top = 24.dp),
+        modifier = modifier.padding(bottom = 8.dp, top = 32.dp),
         text = stringResource(R.string.fapscreen_developer_title),
-        style = LocalTypography.current.buttonM16,
+        style = LocalTypography.current.titleB18,
         color = LocalPallet.current.text100
     )
     val githubLinkModifier = Modifier.padding(top = 16.dp)
@@ -61,29 +62,33 @@ private fun ComposableGithubLink(
     @StringRes textId: Int,
     url: String?,
     modifier: Modifier = Modifier
-) = Row(
-    modifier = modifier,
-    verticalAlignment = Alignment.CenterVertically
 ) {
-    val text = stringResource(textId)
-    Icon(
-        modifier = Modifier.size(24.dp),
-        painter = painterResource(R.drawable.ic_github),
-        contentDescription = text
-    )
     val uriHandler = LocalUriHandler.current
-    Text(
-        modifier = Modifier
-            .padding(start = 8.dp)
+
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
             .clickable {
                 if (url != null) {
                     uriHandler.openUri(url)
                 }
             },
-        text = text,
-        style = LocalTypography.current.bodyR14.copy(
-            textDecoration = TextDecoration.Underline
-        ),
-        color = LocalPallet.current.text100
-    )
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        val text = stringResource(textId)
+        Icon(
+            modifier = Modifier.size(24.dp),
+            painter = painterResource(R.drawable.ic_github),
+            contentDescription = text
+        )
+        Text(
+            modifier = Modifier
+                .padding(start = 8.dp),
+            text = text,
+            style = LocalTypography.current.bodyR14.copy(
+                textDecoration = TextDecoration.Underline
+            ),
+            color = LocalPallet.current.text100
+        )
+    }
 }

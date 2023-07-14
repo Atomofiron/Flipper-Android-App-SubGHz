@@ -1,7 +1,6 @@
 plugins {
     id("flipper.android-compose")
-    id("com.squareup.anvil")
-    id("kotlin-kapt")
+    id("flipper.anvil")
     id("kotlinx-serialization")
 }
 
@@ -12,6 +11,8 @@ dependencies {
     implementation(projects.components.share.api)
     implementation(projects.components.keyscreen.shared)
     implementation(projects.components.archive.api)
+    implementation(projects.components.keyemulate.api)
+    implementation(projects.components.keyparser.api)
 
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.di)
@@ -46,9 +47,6 @@ dependencies {
     implementation(libs.compose.navigation.material)
     implementation(libs.image.lottie)
 
-    // Dagger deps
-    implementation(libs.dagger)
-    kapt(libs.dagger.kapt)
     implementation(libs.tangle.viewmodel.compose)
     implementation(libs.tangle.viewmodel.api)
     anvil(libs.tangle.viewmodel.compiler)
@@ -59,4 +57,12 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.ktx.fragment)
+
+    // Testing
+    testImplementation(projects.components.core.test)
+    testImplementation(libs.junit)
+    testImplementation(libs.kotlin.coroutines.test)
+    testImplementation(libs.roboelectric)
+    testImplementation(libs.ktx.testing)
+    testImplementation(libs.mockk)
 }

@@ -1,7 +1,6 @@
 plugins {
     id("flipper.android-compose")
-    id("com.squareup.anvil")
-    id("kotlin-kapt")
+    id("flipper.anvil")
     id("kotlinx-serialization")
 }
 
@@ -23,6 +22,7 @@ dependencies {
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.synchronization.api)
     implementation(projects.components.keyscreen.api)
+    implementation(projects.components.keyparser.api)
 
     implementation(libs.appcompat)
 
@@ -41,8 +41,6 @@ dependencies {
     implementation(libs.kotlin.serialization.json)
 
     // Dagger deps
-    implementation(libs.dagger)
-    kapt(libs.dagger.kapt)
     implementation(libs.tangle.viewmodel.compose)
     implementation(libs.tangle.viewmodel.api)
     anvil(libs.tangle.viewmodel.compiler)

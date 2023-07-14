@@ -15,12 +15,20 @@ class FlipperKeyParserHelper @Inject constructor(
 ) {
     suspend fun toFlipperKey(link: Deeplink?): Result<FlipperKey> {
         if (link == null) return Result.failure(FlipperKeyParseException())
-        if (link !is Deeplink.FlipperKey) return Result.failure(FlipperKeyParseException())
+        var content: DeeplinkContent? = null
+        var path: FlipperFilePath? = null
+        if (link is Deeplink.ExternalContent) {
+            content = link.content
+        }
+        if (link is Deeplink.FlipperKey) {
+            path = link.path
+            content = link.content
+        }
 
-        return when (val content = link.content) {
-            is DeeplinkContent.FFFContent -> parseFFFContent(content, link.path)
+        return when (content) {
+            is DeeplinkContent.FFFContent -> parseFFFContent(content, path)
             is DeeplinkContent.InternalStorageFile -> parseInternalFile(content)
-            is DeeplinkContent.FFFCryptoContent -> parseCryptoContent(link.path, content)
+            is DeeplinkContent.FFFCryptoContent -> parseCryptoContent(path, content)
             else -> Result.failure(FlipperKeyParseException())
         }
     }
@@ -64,23 +72,23 @@ class FlipperKeyParserHelper @Inject constructor(
         deeplinkContent: DeeplinkContent.FFFCryptoContent
     ): Result<FlipperKey> {
         val localPath = path ?: return Result.failure(FlipperKeyParseException())
-        val data = cryptoStorageApi.download(
+        val flipperKeyContent = cryptoStorageApi.download(
             id = deeplinkContent.key.fileId,
             key = deeplinkContent.key.cryptoKey,
             name = localPath.nameWithExtension
         )
-        data.onSuccess {
+        flipperKeyContent.onSuccess {
             val flipperKey = FlipperKey(
                 mainFile = FlipperFile(
                     localPath,
-                    FlipperKeyContent.RawData(it)
+                    it
                 ),
                 synchronized = false,
                 deleted = false
             )
             return Result.success(flipperKey)
         }
-        val exception = data.exceptionOrNull() ?: FlipperKeyParseException()
+        val exception = flipperKeyContent.exceptionOrNull() ?: FlipperKeyParseException()
         return Result.failure(exception)
     }
 }

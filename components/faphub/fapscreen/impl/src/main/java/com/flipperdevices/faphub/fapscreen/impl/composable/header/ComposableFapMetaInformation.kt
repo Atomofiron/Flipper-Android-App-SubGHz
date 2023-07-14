@@ -49,13 +49,9 @@ internal fun ComposableFapMetaInformation(
     ComposableInformationColumn(
         modifier = informationColumnModifier,
         name = stringResource(R.string.fapscreen_information_size),
-        value = metaInformation?.sizeBytes?.toFormattedSize()
-    )
-    ComposableInformationDivider()
-    ComposableInformationColumn(
-        modifier = informationColumnModifier,
-        name = stringResource(R.string.fapscreen_information_api),
-        value = metaInformation?.apiVersion?.toString()
+        value = metaInformation?.sizeBytes?.toFormattedSize() ?: stringResource(
+            R.string.fapscreen_information_size_unknown
+        )
     )
 }
 

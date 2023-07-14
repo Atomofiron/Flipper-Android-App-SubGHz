@@ -16,7 +16,7 @@ compose-wear = "1.1.2" # https://developer.android.com/jetpack/androidx/releases
 compose-compiler = "1.4.7" # https://developer.android.com/jetpack/androidx/releases/compose#versions
 compose-accompanist = "0.30.1" # https://github.com/google/accompanist/releases
 compose-constraint = "1.0.1" # https://developer.android.com/jetpack/compose/layouts/constraintlayout
-compose-navigation = "2.6.0-rc01" # https://developer.android.com/jetpack/compose/navigation
+compose-navigation = "2.6.0" # https://developer.android.com/jetpack/compose/navigation
 compose-paging = "1.0.0-alpha19" # https://developer.android.com/jetpack/androidx/releases/paging
 horologist = "0.4.5" # https://github.com/google/horologist/releases
 serialization-json = "1.5.0" # https://github.com/Kotlin/kotlinx.serialization/releases
@@ -56,10 +56,8 @@ tangle = "ndoglio-kotlin-1.8-SNAPSHOT" # https://github.com/RBusarow/Tangle/rele
 work = "2.8.1" # https://developer.android.com/jetpack/androidx/releases/work
 coil = "2.4.0" # https://github.com/coil-kt/coil/releases
 play-core = "2.0.1" # https://developer.android.com/guide/playcore#java-kotlin-in-app-update
-retrofit = "2.9.0" # https://github.com/square/retrofit/tags
-retrofit-json = "1.0.0" # https://github.com/JakeWharton/retrofit2-kotlinx-serialization-converter/releases
-okhttp = "4.10.0" # https://square.github.io/okhttp/changelogs/changelog/#version-4x
-
+ktorfit = "1.4.1" # https://github.com/Foso/Ktorfit/releases
+ktorfit-gradle = "1.0.0" # https://plugins.gradle.org/plugin/de.jensklingenberg.ktorfit
 
 # Testing
 junit = "4.12"
@@ -68,9 +66,9 @@ roboelectric = "4.10.2"
 mockk = "1.13.2"
 
 # Linters
-detekt = "1.22.0" # https://detekt.dev/docs/gettingstarted/gradle/
+detekt = "1.23.0" # https://detekt.dev/docs/gettingstarted/gradle/
 detekt-ruleset-compiler = "0.0.2" # https://github.com/BraisGabin/detekt-compiler-rules/releases
-detekt-ruleset-ktlint = "0.49.0" # https://github.com/pinterest/ktlint/releases
+detekt-ruleset-ktlint = "0.49.1" # https://github.com/pinterest/ktlint/releases
 detekt-ruleset-twitter-compose = "0.0.26" # https://github.com/twitter/compose-rules/releases
 
 [libraries]
@@ -127,9 +125,12 @@ compose-pager-indicators = { module = "com.google.accompanist:accompanist-pager-
 compose-placeholder = { module = "com.google.accompanist:accompanist-placeholder", version.ref = "compose-accompanist" }
 compose-swipetorefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "compose-accompanist" }
 compose-constraint = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "compose-constraint" }
-compose-coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
-compose-coil-svg = { module = "io.coil-kt:coil-svg", version.ref = "coil" }
 compose-paging = { module = "androidx.paging:paging-compose", version.ref = "compose-paging" }
+
+# Coil
+coil = { module = "io.coil-kt:coil", version.ref = "coil" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+coil-svg = { module = "io.coil-kt:coil-svg", version.ref = "coil" }
 
 # Markdown
 flexmark-core = { module = "com.vladsch.flexmark:flexmark", version.ref = "flexmark" }
@@ -198,11 +199,10 @@ ktor-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json", versi
 ktor-logging = { module = "io.ktor:ktor-client-logging-jvm", version.ref = "ktor" }
 ktor-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
 
-# Retrofit
-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
-retrofit-json = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version.ref = "retrofit-json" }
-okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
-okhttp-logging = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
+# Ktorfit
+ktorfit-ksp = { module = "de.jensklingenberg.ktorfit:ktorfit-ksp", version.ref = "ktorfit" }
+ktorfit-lib = { module = "de.jensklingenberg.ktorfit:ktorfit-lib", version.ref = "ktorfit" }
+ktorfit-gradle = { module = "de.jensklingenberg.ktorfit:gradle-plugin", version.ref = "ktorfit-gradle" }
 
 # Apache commons
 apache-compress = { module = "org.apache.commons:commons-compress", version.ref = "apache-compress" }

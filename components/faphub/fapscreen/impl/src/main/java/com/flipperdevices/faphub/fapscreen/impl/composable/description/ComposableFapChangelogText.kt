@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -12,11 +13,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.markdown.annotatedStringFromMarkdown
+import com.flipperdevices.core.markdown.ComposableMarkdown
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
@@ -31,45 +30,44 @@ fun ColumnScope.ComposableFapChangelogText(
     changelog: String?,
     modifier: Modifier = Modifier
 ) {
-    var showMoreButton by remember { mutableStateOf(false) }
     var maxChangelogLines by remember { mutableStateOf(MAX_CHANGELOG_LINE) }
     Text(
-        modifier = modifier.padding(bottom = 8.dp, top = 24.dp),
+        modifier = modifier.padding(bottom = 8.dp, top = 32.dp),
         text = stringResource(R.string.fapscreen_changelog_title),
-        style = LocalTypography.current.buttonM16,
+        style = LocalTypography.current.titleB18,
         color = LocalPallet.current.text100
     )
 
-    Text(
-        modifier = if (changelog == null) {
-            Modifier
-                .fillMaxWidth()
-                .placeholderConnecting()
-        } else {
-            Modifier
-        },
-        text = changelog?.let { annotatedStringFromMarkdown(it) }
-            ?: AnnotatedString(DEFAULT_CHANGELOG),
-        style = LocalTypography.current.bodyR14,
-        color = LocalPallet.current.text100,
-        maxLines = maxChangelogLines,
-        overflow = TextOverflow.Ellipsis,
-        onTextLayout = {
-            if (it.hasVisualOverflow) {
-                showMoreButton = changelog != null
-            } else {
-                showMoreButton = false
-            }
+    val (processedChangelog, hasOverflow) = remember(changelog, maxChangelogLines) {
+        if (changelog == null) {
+            return@remember null to false
         }
-    )
+        val lines = changelog.lines()
+        if (lines.size > maxChangelogLines) {
+            return@remember lines.take(maxChangelogLines).joinToString("\n") to true
+        }
+        return@remember changelog to false
+    }
 
-    if (showMoreButton) {
+    SelectionContainer {
+        ComposableMarkdown(
+            modifier = if (processedChangelog == null) {
+                Modifier
+                    .fillMaxWidth()
+                    .placeholderConnecting()
+            } else {
+                Modifier.fillMaxWidth()
+            },
+            content = processedChangelog ?: DEFAULT_CHANGELOG,
+        )
+    }
+
+    if (hasOverflow) {
         Text(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
                     maxChangelogLines = Int.MAX_VALUE
-                    showMoreButton = false
                 }
                 .padding(top = 2.dp),
             text = stringResource(R.string.fapscreen_changelog_more),

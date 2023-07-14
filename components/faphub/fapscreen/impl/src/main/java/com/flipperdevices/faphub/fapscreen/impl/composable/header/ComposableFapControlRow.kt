@@ -1,6 +1,5 @@
 package com.flipperdevices.faphub.fapscreen.impl.composable.header
 
-import android.content.Intent
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -9,26 +8,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
-import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
-import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.faphub.dao.api.model.FapItem
-import com.flipperdevices.faphub.fapscreen.impl.R
 import com.flipperdevices.faphub.fapscreen.impl.model.FapDetailedControlState
 
 @Composable
 fun ComposableFapControlRow(
     controlState: FapDetailedControlState,
-    onDelete: () -> Unit,
+    uninstallButton: @Composable (Modifier) -> Unit,
     modifier: Modifier = Modifier,
     installationButton: @Composable (FapItem?, Modifier) -> Unit
 ) {
@@ -44,7 +35,7 @@ fun ComposableFapControlRow(
                 modifier = modifier,
                 state = controlStateLocal,
                 installationButton = installationButton,
-                onDelete = onDelete
+                uninstallButton = uninstallButton
             )
 
             FapDetailedControlState.Loading -> ComposableFapControlRowInProgress(modifier)
@@ -71,7 +62,6 @@ private fun ComposableFapControlRowInProgress(
     modifier = modifier,
     verticalAlignment = Alignment.CenterVertically
 ) {
-    ComposableFapControlShareButton(state.shareUrl)
     installationButton(
         state.fapItem,
         Modifier
@@ -84,55 +74,21 @@ private fun ComposableFapControlRowInProgress(
 private fun ComposableFapControlRowInstalled(
     state: FapDetailedControlState.Installed,
     installationButton: @Composable (FapItem?, Modifier) -> Unit,
-    onDelete: () -> Unit,
+    uninstallButton: @Composable (Modifier) -> Unit,
     modifier: Modifier = Modifier
 ) = Row(
     modifier = modifier,
     verticalAlignment = Alignment.CenterVertically
 ) {
-    ComposableFapControlShareButton(state.shareUrl)
-    Icon(
-        modifier = Modifier
+    uninstallButton(
+        Modifier
             .padding(end = 12.dp)
             .size(46.dp)
-            .clickableRipple(onClick = onDelete),
-        painter = painterResource(R.drawable.ic_delete),
-        contentDescription = stringResource(R.string.fapscreen_install_delete_desc),
-        tint = LocalPallet.current.onError
     )
     installationButton(
         state.fapItem,
         Modifier
             .weight(weight = 1f)
             .fillMaxHeight()
-    )
-}
-
-@Composable
-private fun ComposableFapControlShareButton(
-    shareUrl: String,
-    modifier: Modifier = Modifier
-) {
-    val context = LocalContext.current
-    val shareTitle = stringResource(R.string.fapscreen_install_share_desc)
-    Icon(
-        modifier = modifier
-            .padding(end = 12.dp)
-            .size(46.dp)
-            .clickableRipple {
-                val intent = Intent().apply {
-                    action = Intent.ACTION_SEND
-                    putExtra(Intent.EXTRA_TEXT, shareUrl)
-                    type = "text/plain"
-                }
-                ContextCompat.startActivity(
-                    context,
-                    Intent.createChooser(intent, shareTitle),
-                    null
-                )
-            },
-        painter = painterResource(R.drawable.ic_share),
-        contentDescription = shareTitle,
-        tint = LocalPallet.current.accent
     )
 }

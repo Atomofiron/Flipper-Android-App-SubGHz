@@ -1,11 +1,22 @@
+import com.flipperdevices.buildlogic.ApkConfig.IS_GOOGLE_FEATURE_AVAILABLE
+
 plugins {
     id("flipper.android-lib")
-    id("com.squareup.anvil")
-    id("kotlin-kapt")
+    id("flipper.anvil")
     id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.selfupdater.thirdparty.github"
+
+android {
+    val isGoogleFeatureAvailable = project.IS_GOOGLE_FEATURE_AVAILABLE.toString()
+
+    buildTypes {
+        defaultConfig {
+            buildConfigField("boolean", "IS_GOOGLE_FEATURE_AVAILABLE", isGoogleFeatureAvailable)
+        }
+    }
+}
 
 dependencies {
     implementation(projects.components.selfupdater.thirdparty.api)
@@ -26,6 +37,4 @@ dependencies {
 
     // Dagger deps
     implementation(projects.components.core.di)
-    implementation(libs.dagger)
-    kapt(libs.dagger.kapt)
 }

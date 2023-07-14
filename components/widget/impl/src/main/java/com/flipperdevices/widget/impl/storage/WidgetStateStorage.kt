@@ -6,7 +6,7 @@ import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.ktx.jre.withLockResult
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.keyscreen.api.emulate.EmulateHelper
+import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.widget.impl.model.WidgetState
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.sync.Mutex
@@ -54,7 +54,7 @@ class WidgetStateStorageImpl @Inject constructor(
         if (widgetKeyPath != null) {
             info { "Widget key path for $widgetId is $widgetKeyPath" }
             val currentActiveEmulating = emulateHelper.getCurrentEmulatingKey().value
-            if (currentActiveEmulating == widgetKeyPath.path) {
+            if (currentActiveEmulating?.keyPath == widgetKeyPath.path) {
                 info {
                     "Current active emulating is $currentActiveEmulating, so return IN_PROGRESS"
                 }

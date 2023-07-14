@@ -1,9 +1,49 @@
 # Changelog
 
-# 1.5.2 - In Progress
+# 1.6.1 - In progress
 
+- [FIX] FapHub build status layout
+- [FIX] Custom install and file manager uploader, deeplink refactor
+- [FIX] FapHub build status hide icon instead of info
+- [Feature] Add pull to refresh to fapscreen and category screen
+
+# 1.6.0
+
+- [FIX] Crash application on cancel update
+- [FIX] White Screen after import key
 - [FIX] Add confirm delete dialog and some small fixes
+- [FIX] Hide self updater dialog on click, add self updater in debug mode, remove nfc mfkey32 from
+  options
+- [FIX] Text alignment for simple device info
+- [FIX] Endpoint for fap hub build download
+- [FIX] App open metric
+- [FIX] Remove kotlin incremental
+- [FIX] Faphub search, build status dialogs, placeholders
 - [Feature] FapHub MVPv0
+- [Feature] Update README with Fdroid badge
+- [Feature] Migrate faphub to target flow
+- [Feature] Update Geminio for create modules - simple, navigation, api/impl
+- [Feature] FapHub manifest support offline mode and add target support for buttons 
+- [Feature] Add flipper not connected dialog
+- [Feature] Markdown support for fap description and changelog
+- [Feature] Infrared Emulate (parse name remotes)
+- [Feature] Deeplik on open fap application
+- [Feature] Add url to release catalog
+- [Feature] Add build status card to app screen
+- [Feature] Add report app button
+- [Feature] Now the installed apps are even shown offline
+- [Feature] Change design for installed tab
+- [Feature] Add metric for firmware origin
+- [Feature] Add more error catching for FapHub
+- [Refactor] Migrate all feature components modules from KSP to Anvil
+- [Refactor] Migrate to Ktorfit
+- [Refactor] Migrate key emulate to new module, decompose Emulate Helper
+- [Refactor] Key Screen state in API and KeyCard with state
+- [Refactor] Add detekt property and fix perfomance issue in nfc editor
+- [Refactor] Key Parser new module
+- [Refactor] Stream for crypto and share key content
+- [Refactor] Emulate by config
+- [Refactor] Refactor BLE API
 
 # 1.5.1
 
@@ -11,7 +51,7 @@
 - [FIX] Position bubble on key sub-ghz emulate and update hold modifier by new api
 - [FIX] Hotfix wearos app and app catalog switch
 
-# 1.5.0 - In Progress
+# 1.5.0
 
 - [Feature] Flipper app loader errors
 - [Feature] More smoothly synchronization percent

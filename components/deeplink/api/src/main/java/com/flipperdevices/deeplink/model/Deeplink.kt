@@ -10,8 +10,14 @@ import kotlinx.serialization.Serializable
 sealed class Deeplink : Parcelable {
     @Parcelize
     @Serializable
+    data class ExternalContent(
+        val content: DeeplinkContent? = null
+    ) : Deeplink()
+
+    @Parcelize
+    @Serializable
     data class FlipperKey(
-        val path: FlipperFilePath? = null,
+        val path: FlipperFilePath,
         val content: DeeplinkContent? = null
     ) : Deeplink()
 
@@ -32,5 +38,11 @@ sealed class Deeplink : Parcelable {
     data class WebUpdate(
         val url: String,
         val name: String,
+    ) : Deeplink()
+
+    @Parcelize
+    @Serializable
+    data class Fap(
+        val appId: String,
     ) : Deeplink()
 }

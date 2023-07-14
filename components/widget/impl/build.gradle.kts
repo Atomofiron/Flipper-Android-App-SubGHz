@@ -1,7 +1,6 @@
 plugins {
     id("flipper.android-lib")
-    id("com.squareup.anvil")
-    id("kotlin-kapt")
+    id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.widget.impl"
@@ -16,6 +15,7 @@ dependencies {
     implementation(projects.components.core.ui.res)
 
     implementation(projects.components.keyscreen.api)
+    implementation(projects.components.keyemulate.api)
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.dao.api)
@@ -27,8 +27,4 @@ dependencies {
 
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.kotlin.coroutines)
-
-    // Dagger deps
-    implementation(libs.dagger)
-    kapt(libs.dagger.kapt)
 }

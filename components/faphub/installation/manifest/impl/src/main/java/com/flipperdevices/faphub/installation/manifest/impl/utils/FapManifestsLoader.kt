@@ -9,9 +9,10 @@ import com.flipperdevices.core.ktx.jre.flatten
 import com.flipperdevices.core.ktx.jre.pmap
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.faphub.installation.manifest.impl.model.FapManifestInternalItem
+import com.flipperdevices.core.ui.errors.throwable.FlipperNotConnected
 import com.flipperdevices.faphub.installation.manifest.impl.utils.FapManifestConstants.FAP_MANIFESTS_FOLDER_ON_FLIPPER
 import com.flipperdevices.faphub.installation.manifest.impl.utils.FapManifestConstants.FAP_MANIFEST_EXTENSION
+import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.listRequest
 import com.flipperdevices.protobuf.storage.readRequest
@@ -26,8 +27,11 @@ class FapManifestsLoader @Inject constructor(
 ) : LogTagProvider {
     override val TAG = "FapManifestsLoader"
 
-    suspend fun load(): List<FapManifestInternalItem> {
+    suspend fun load(): List<FapManifestItem> {
         val serviceApi = flipperServiceProvider.getServiceApi()
+        if (!serviceApi.connectionInformationApi.isDeviceConnected()) {
+            throw FlipperNotConnected()
+        }
         info { "Start load manifests" }
         var manifestNames = getManifestPaths(serviceApi.requestApi)
         info { "Find ${manifestNames.size} files" }
