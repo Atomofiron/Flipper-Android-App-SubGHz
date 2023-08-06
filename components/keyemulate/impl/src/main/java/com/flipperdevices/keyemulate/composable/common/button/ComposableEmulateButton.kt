@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.image.Picture
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.keyemulate.composable.common.button.sweep.getEmulateProgressBrush
 import com.flipperdevices.keyemulate.model.EmulateProgress
 
 private const val BUTTON_HEIGHT_DP = 56
@@ -28,7 +27,7 @@ private const val BUTTON_HEIGHT_DP = 56
 @Composable
 @Suppress("LongParameterList")
 fun ComposableEmulateButton(
-    @StringRes textId: Int,
+    text: String,
     picture: Picture?,
     color: Color,
     modifier: Modifier = Modifier,
@@ -43,11 +42,33 @@ fun ComposableEmulateButton(
     ) { contentModifier ->
         ComposableEmulateContent(
             modifier = contentModifier.then(buttonContentModifier),
-            text = stringResource(textId),
+            text = text,
             color = color,
             picture = picture
         )
     }
+}
+
+@Composable
+@Suppress("LongParameterList")
+fun ComposableEmulateButton(
+    @StringRes textId: Int,
+    picture: Picture?,
+    color: Color,
+    modifier: Modifier = Modifier,
+    buttonContentModifier: Modifier = Modifier,
+    emulateProgress: EmulateProgress? = null,
+    progressColor: Color = Color.Transparent
+) {
+    ComposableEmulateButton(
+        text = stringResource(textId),
+        picture = picture,
+        color = color,
+        modifier = modifier,
+        buttonContentModifier = buttonContentModifier,
+        emulateProgress = emulateProgress,
+        progressColor = progressColor
+    )
 }
 
 @Composable

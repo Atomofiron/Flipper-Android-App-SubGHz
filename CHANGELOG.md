@@ -1,11 +1,30 @@
 # Changelog
 
-# 1.6.1 - In progress
+# 1.6.3 - In progress
+
+- [FIX] Fix 101% issue on update screen
+- [FIX] Fix build for fdroid
+- [FIX] Fix rpc request/update for 0.64.3 firmware
+
+# 1.6.2
+
+- [FIX] Fix bug with restoreState navigation
+- [FIX] Fix problems with large amount of application
+- [Feature] Add pull to refresh update for update card
+- [Feature] Infrared Emulate (without editing)
+- [Feature] Use as key for fap appcard application id
+- [Feature] Add install all button
+- [REFACTOR] Bump deps
+
+# 1.6.1
 
 - [FIX] FapHub build status layout
 - [FIX] Custom install and file manager uploader, deeplink refactor
 - [FIX] FapHub build status hide icon instead of info
+- [FIX] Firmware outdated fix
 - [Feature] Add pull to refresh to fapscreen and category screen
+- [Feature] Add "Not Compatible with your Firmware" error
+- [Feature] Remove InApp flag in settings
 
 # 1.6.0
 
@@ -19,6 +38,7 @@
 - [FIX] App open metric
 - [FIX] Remove kotlin incremental
 - [FIX] Faphub search, build status dialogs, placeholders
+- [Feature] Open application and screen streaming if install
 - [Feature] FapHub MVPv0
 - [Feature] Update README with Fdroid badge
 - [Feature] Migrate faphub to target flow

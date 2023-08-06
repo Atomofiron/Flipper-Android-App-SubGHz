@@ -75,6 +75,9 @@ dependencies {
     implementation(projects.components.keyparser.api)
     implementation(projects.components.keyparser.impl)
 
+    implementation(projects.components.infrared.api)
+    implementation(projects.components.infrared.impl)
+
     implementation(projects.components.inappnotification.api)
     implementation(projects.components.inappnotification.impl)
 
@@ -177,6 +180,9 @@ dependencies {
     implementation(projects.components.faphub.installation.stateprovider.api)
     implementation(projects.components.faphub.installation.stateprovider.impl)
 
+    implementation(projects.components.faphub.installation.all.api)
+    implementation(projects.components.faphub.installation.all.impl)
+
     implementation(projects.components.faphub.installation.queue.api)
     implementation(projects.components.faphub.installation.queue.impl)
 
@@ -191,6 +197,9 @@ dependencies {
 
     implementation(projects.components.faphub.uninstallbutton.api)
     implementation(projects.components.faphub.uninstallbutton.impl)
+
+    implementation(projects.components.faphub.errors.api)
+    implementation(projects.components.faphub.errors.impl)
 
     implementation(projects.components.faphub.utils)
 

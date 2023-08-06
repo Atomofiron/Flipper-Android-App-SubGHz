@@ -107,7 +107,7 @@ class FapInstallationStateManagerImpl @Inject constructor(
                 val sdkApi = fapManifestEnrichedItem.fapManifestItem.sdkApi
                 if (currentVersion.buildState != FapBuildState.READY) {
                     return@let FapState.Installed
-                } else if (fapManifestEnrichedItem.numberVersion > currentVersion.version) {
+                } else if (fapManifestEnrichedItem.numberVersion < currentVersion.version) {
                     return@let FapState.ReadyToUpdate(fapManifestEnrichedItem.fapManifestItem)
                 } else if (sdkApi == null || sdkApi != flipperTarget.sdk) {
                     return@let FapState.ReadyToUpdate(fapManifestEnrichedItem.fapManifestItem)

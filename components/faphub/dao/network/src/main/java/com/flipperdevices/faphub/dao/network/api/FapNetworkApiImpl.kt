@@ -7,11 +7,11 @@ import com.flipperdevices.core.log.warn
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.SortType
+import com.flipperdevices.faphub.dao.network.helper.FapApplicationReceiveHelper
 import com.flipperdevices.faphub.dao.network.ktorfit.api.KtorfitApplicationApi
-import com.flipperdevices.faphub.dao.network.ktorfit.model.types.ApplicationSortType
-import com.flipperdevices.faphub.dao.network.ktorfit.model.types.SortOrderType
 import com.flipperdevices.faphub.dao.network.ktorfit.utils.FapHubNetworkCategoryApi
 import com.flipperdevices.faphub.dao.network.ktorfit.utils.HostUrlBuilder
+import com.flipperdevices.faphub.errors.api.throwable.FirmwareNotSupported
 import com.flipperdevices.faphub.target.model.FlipperTarget
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +22,8 @@ import javax.inject.Inject
 class FapNetworkApiImpl @Inject constructor(
     private val applicationApi: KtorfitApplicationApi,
     private val categoryApi: FapHubNetworkCategoryApi,
-    private val hostUrlBuilder: HostUrlBuilder
+    private val hostUrlBuilder: HostUrlBuilder,
+    private val fapApplicationReceiveHelper: FapApplicationReceiveHelper
 ) : FapNetworkApi, LogTagProvider {
     override val TAG = "FapNetworkApi"
 
@@ -57,28 +58,14 @@ class FapNetworkApiImpl @Inject constructor(
             return@catchWithDispatcher emptyList()
         }
         debug { "Request all item" }
-        val response = when (target) {
-            FlipperTarget.Unsupported,
-            FlipperTarget.NotConnected -> applicationApi.getAll(
-                offset = offset,
-                limit = limit,
-                sortBy = ApplicationSortType.fromSortType(sortType),
-                sortOrder = SortOrderType.fromSortType(sortType),
-                categoryId = category?.id,
-                applications = applicationIds
-            )
-
-            is FlipperTarget.Received -> applicationApi.getAllWithTarget(
-                offset = offset,
-                limit = limit,
-                sortBy = ApplicationSortType.fromSortType(sortType),
-                sortOrder = SortOrderType.fromSortType(sortType),
-                target = target.target,
-                sdkApiVersion = target.sdk.toString(),
-                categoryId = category?.id,
-                applications = applicationIds
-            )
-        }
+        val response = fapApplicationReceiveHelper.get(
+            target = target,
+            category = category,
+            sortType = sortType,
+            offset = offset,
+            limit = limit,
+            applicationIds = applicationIds
+        )
         debug { "Provider response: $response" }
 
         val fapItems = response.mapNotNull {
@@ -101,8 +88,8 @@ class FapNetworkApiImpl @Inject constructor(
         }
 
         val response = when (target) {
-            FlipperTarget.NotConnected,
-            FlipperTarget.Unsupported -> applicationApi.getAll(
+            FlipperTarget.Unsupported -> throw FirmwareNotSupported()
+            FlipperTarget.NotConnected -> applicationApi.getAll(
                 limit = limit,
                 offset = offset,
                 query = queryToServer

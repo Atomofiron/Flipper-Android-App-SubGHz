@@ -96,4 +96,15 @@ private fun DebugCategoryItems(
         state = settings.selfUpdaterDebug,
         onSwitchState = debugViewModel::onSwitchSelfUpdaterDebug
     )
+    GrayDivider()
+    SwitchableElement(
+        titleId = R.string.experimental_new_infrared,
+        state = settings.useNewInfrared,
+        onSwitchState = debugViewModel::onSwitchNewInfrared
+    )
+    GrayDivider()
+    ClickableElement(
+        titleId = R.string.debug_application_installall_dev,
+        onClick = debugViewModel::installAllApplication
+    )
 }
