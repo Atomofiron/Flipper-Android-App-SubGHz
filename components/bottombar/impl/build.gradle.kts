@@ -37,11 +37,11 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.pager)
     implementation(libs.compose.navigation)
+    implementation(libs.compose.systemuicontroller)
     implementation(libs.image.lottie)
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.kotlin.immutable.collections)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
-    implementation(libs.ktx.fragment)
 }

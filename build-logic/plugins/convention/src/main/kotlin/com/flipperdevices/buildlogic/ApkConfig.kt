@@ -7,7 +7,7 @@ object ApkConfig {
 
     const val MIN_SDK_VERSION = 26
     const val TARGET_SDK_VERSION = 33
-    const val COMPILE_SDK_VERSION = 33
+    const val COMPILE_SDK_VERSION = 34
 
     private const val DEBUG_VERSION = "GitHub dev 06.08.2023"
 
@@ -33,7 +33,6 @@ object ApkConfig {
                 return@run SourceInstall.DEBUG
             }
             return@run when (providers.gradleProperty("source_install").orNull) {
-                "fdroid" -> SourceInstall.FDROID
                 "github" -> SourceInstall.GITHUB
                 "googleplay" -> SourceInstall.GOOGLE_PLAY
                 else -> SourceInstall.UNKNOWN

@@ -22,9 +22,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.inappnotification.api.model.InAppNotification
+import com.flipperdevices.inappnotification.impl.composable.type.ComposableInAppNotificationHideApp
 import com.flipperdevices.inappnotification.impl.composable.type.ComposableInAppNotificationReportApp
 import com.flipperdevices.inappnotification.impl.composable.type.ComposableInAppNotificationSavedKey
-import com.flipperdevices.inappnotification.impl.composable.type.ComposableInAppNotificationUpdateReady
+import com.flipperdevices.inappnotification.impl.composable.type.ComposableInAppNotificationSelfUpdateError
+import com.flipperdevices.inappnotification.impl.composable.type.ComposableInAppNotificationSelfUpdateReady
+import com.flipperdevices.inappnotification.impl.composable.type.ComposableInAppNotificationSelfUpdateStarted
 import kotlin.math.max
 
 const val VISIBLE_ANIMATION_MS = 1000
@@ -41,6 +44,7 @@ fun ComposableInAppNotification(
 }
 
 @Composable
+@Suppress("LongMethod")
 private fun ComposableInAppNotificationCard(
     notification: InAppNotification,
     onNotificationHidden: () -> Unit,
@@ -69,14 +73,31 @@ private fun ComposableInAppNotificationCard(
                     ComposableInAppNotificationSavedKey(notification)
                 }
 
-                is InAppNotification.UpdateReady -> {
-                    ComposableInAppNotificationUpdateReady(notification) {
+                is InAppNotification.SelfUpdateReady -> {
+                    ComposableInAppNotificationSelfUpdateReady(notification) {
                         visibleState = false
                         actionClicked = true
+                        onNotificationHidden()
                     }
                 }
 
+                is InAppNotification.SelfUpdateError -> {
+                    ComposableInAppNotificationSelfUpdateError()
+                }
+
+                is InAppNotification.SelfUpdateStarted -> {
+                    ComposableInAppNotificationSelfUpdateStarted()
+                }
+
                 InAppNotification.ReportApp -> ComposableInAppNotificationReportApp()
+                is InAppNotification.HiddenApp -> ComposableInAppNotificationHideApp(
+                    notification = notification,
+                    onClickAction = {
+                        visibleState = false
+                        actionClicked = true
+                        onNotificationHidden()
+                    }
+                )
             }
         }
     }

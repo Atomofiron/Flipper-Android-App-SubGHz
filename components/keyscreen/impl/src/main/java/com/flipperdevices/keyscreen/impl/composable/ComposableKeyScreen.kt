@@ -22,7 +22,7 @@ fun ComposableKeyScreen(
     nfcEditorApi: NfcEditorApi,
     keyEmulateApi: KeyEmulateApi,
     onBack: () -> Unit,
-    onShare: (FlipperKeyPath) -> Unit,
+    onShare: () -> Unit,
     onOpenNfcEditor: (FlipperKeyPath) -> Unit,
     onOpenEditScreen: (FlipperKeyPath) -> Unit
 ) {
@@ -33,8 +33,8 @@ fun ComposableKeyScreen(
         is KeyScreenState.Error -> ComposableKeyScreenError(
             text = stringResource(id = localKeyScreenState.reason)
         )
+
         is KeyScreenState.Ready -> ComposableKeyParsed(
-            viewModel,
             localKeyScreenState,
             nfcEditorApi,
             synchronizationUiApi,
@@ -42,7 +42,11 @@ fun ComposableKeyScreen(
             onShare = onShare,
             onBack = onBack,
             onOpenNfcEditor = onOpenNfcEditor,
-            onOpenEditScreen = onOpenEditScreen
+            setFavorite = viewModel::setFavorite,
+            onEdit = { viewModel.onOpenEdit(onOpenEditScreen) },
+            emulateConfig = localKeyScreenState.emulateConfig,
+            onRestore = { viewModel.onRestore(onBack) },
+            onDelete = { viewModel.onDelete(onBack) }
         )
     }
     SetUpNavigationBarColor(color = LocalPallet.current.background)

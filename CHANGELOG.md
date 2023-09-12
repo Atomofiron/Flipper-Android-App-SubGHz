@@ -1,6 +1,42 @@
 # Changelog
 
-# 1.6.3 - In progress
+# 1.6.5 - In progress
+
+- [Feature] Scroll on Infrared Screen
+- [Feature] Check Self Update App in Options (only for github)
+- [Feature] Fap Catalog save sort
+- [Feature] Check Self Update App in Optiond (only for github)
+- [FIX] Use by default dark theme in Wear OS
+- [FIX] Use default splashscreen in Wear OS
+- [FIX] Fix compose layout in Wear OS
+
+# 1.6.4 
+
+- [Feature] Add transparent flipper mockup
+- [Feature] Add broke rpc ble session button to debug settings
+- [Feature] Add transparent flipper mockup with fixed templates
+- [Feature] Add fap manifest caching
+- [Feature] Not send empty report in faphub
+- [Feature] Add hide app button
+- [Feature] Check Self Update App in Optiond (only for github)
+- [CI] Add apk artifacts to Pull Requests
+- [CI] Fix failed build in merge_group
+- [CI] Bump deps except Sentry-gradle
+- [CI] Detekt ViewModelForwarding and ModifierNotUsedAtRoot
+- [FIX] Canceled process loop and close service for WearOS 
+- [FIX] Upgrade google appcompanist
+- [FIX] Bump deps, remove PR apks and fix wearos track
+- [FIX] Return empty list, if flipper path not exist
+- [FIX] New Bottom Sheet
+- [FIX] Version conflict on CI with Google Play deploy
+- [FIX] Add support for size filter in listing request
+- [FIX] Corner padding radius in switch tab
+- [FIX] Category GET request
+- [FIX] Downgrade compose navigation for fix transit animation
+- [FIX] Remove compose insets
+- [FIX] Key emulate button
+
+# 1.6.3
 
 - [FIX] Fix 101% issue on update screen
 - [FIX] Fix build for fdroid

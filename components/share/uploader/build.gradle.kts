@@ -38,7 +38,7 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.compose.navigation)
-    implementation(libs.compose.navigation.material)
+    implementation(libs.compose.systemuicontroller)
 
     // Dagger deps
     implementation(libs.tangle.viewmodel.compose)

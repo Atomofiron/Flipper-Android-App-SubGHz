@@ -25,6 +25,8 @@
     <string name="debug_selfupdater">Suggest self update in debug mode</string>
     <string name="debug_application_catalog_dev">Use dev catalog</string>
     <string name="debug_application_installall_dev">Install all app</string>
+    <string name="debug_broke_session">Broke RPC/BLE session</string>
+
 
     <string name="debug_ignored_unsupported_version_toast">Please restart the application to apply</string>
 
@@ -49,6 +51,13 @@
 
     <string name="options_remote_control_title">Remote Control</string>
     <string name="options_remote_control_subtitle">New Remote Control</string>
-    <string name="options_remote_control_desc">We’ve improved this feature and moved it to the Hub tab</string>
+    <string name="options_remote_control_desc">We’ve improved this feature and moved it to the Hub tab</string>\
+
+    <string name="check_updates_text">Flipper Mobile App</string>
+    <string name="check_updates_desc">Version from %1$s: %2$s</string>
+    <string name="check_updates_button">Check Updates</string>
+    <string name="check_no_updates_button">Got It</string>
+    <string name="check_no_updates_title">No Updates</string>
+    <string name="check_no_updates_text">No updates available for mobile app yet. You’re up-to-date!</string>
 
 </resources>

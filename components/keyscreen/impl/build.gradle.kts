@@ -46,7 +46,6 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.compose.navigation)
-    implementation(libs.compose.navigation.material)
     implementation(libs.image.lottie)
 
     implementation(libs.tangle.viewmodel.compose)
@@ -58,7 +57,6 @@ dependencies {
     implementation(libs.lifecycle.compose)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.runtime.ktx)
-    implementation(libs.ktx.fragment)
 
     // Testing
     testImplementation(projects.components.core.test)

@@ -21,6 +21,7 @@ dependencies {
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.dialog)
+    implementation(projects.components.core.ui.flippermockup)
     implementation(projects.components.core.share)
 
     implementation(projects.components.info.api)
@@ -61,8 +62,6 @@ dependencies {
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.compose)
-
-    implementation(libs.ktx.fragment)
 
     implementation(libs.ble)
     implementation(libs.ble.common)
