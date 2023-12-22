@@ -9,7 +9,7 @@ object ApkConfig {
     const val TARGET_SDK_VERSION = 33
     const val COMPILE_SDK_VERSION = 34
 
-    private const val DEBUG_VERSION = "GitHub dev 22.12.2023"
+    private const val DEBUG_VERSION = "GitHub master 22.12.2023"
 
     val Project.VERSION_CODE
         get() = prop("version_code", Integer.MAX_VALUE).toInt()
