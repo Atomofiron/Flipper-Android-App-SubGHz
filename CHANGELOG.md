@@ -1,7 +1,40 @@
 # Changelog
 
-# 1.6.8 - In progress
+# 1.6.9 - In progress
 
+- [Feature] Add ready app updates popup and notification dot
+- [FIX] Replace decompose push to move safety push
+
+# 1.6.8
+
+- [Refactor] Migrate file manager to decompose
+- [Refactor] Migrate options screen to decompose
+- [Refactor] Migrate device screen to decompose
+- [Refactor] Migrate hub screen to decompose
+- [Refactor] Migrate archive screen to decompose
+- [Refactor] Migrate bottombar to decompose
+- [Refactor] Migrate root screens to decompose
+- [Refactor] Add deeplink handle to decompose
+- [Refactor] Migrate wearos to decompose
+- [Refactor] Remove tangle and jetpack navigation deps
+- [Refactor] Migrate all viewmodel to DecomposeViewModel
+- [FIX] Fix crash with notification on options screen
+- [Fix] Fix status bar color
+- [Feature] Support 4 version of NFC Mifare format
+- [Feature] Button vibration in ScreenStreaming
+- [Refactor] Bump version
+- [FIX] On back button on each page
+- [FIX] Fix blinking caused on wrong stateIn used function
+- [FIX] Box size in inapp notification
+- [FIX] Crash on delete/restore key
+- [FIX] Fix lost connection in screen streaming
+- [Feature] Change notification icon
+- [FIX] Try to fix impact for connect button
+- [FIX] Atomic write/read manifest storage
+- [Refactor] Bump version with dependabot
+- [FIX] Disable edit when emulating in progress
+- [FIX] Single Activity launch mode to singleTask
+- [FIX] Bug with infinite connect state in first pair
 
 # 1.6.7
 

@@ -3,7 +3,6 @@ package com.flipperdevices.infrared.editor.viewmodel
 import android.content.Context
 import android.os.Vibrator
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.utils.FlipperSymbolFilter
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
@@ -15,10 +14,13 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.ktx.android.vibrateCompat
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.infrared.editor.R
-import com.flipperdevices.infrared.editor.api.EXTRA_KEY_PATH
 import com.flipperdevices.infrared.editor.model.InfraredEditorState
 import com.flipperdevices.infrared.editor.model.InfraredRemote
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Dispatchers
@@ -27,22 +29,19 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import tangle.inject.TangleParam
-import tangle.viewmodel.VMInject
 import java.nio.charset.Charset
 
 private const val MAX_SIZE_REMOTE_LENGTH = 21
 private const val VIBRATOR_TIME_MS = 500L
 
 @Suppress("TooManyFunctions")
-class InfraredEditorViewModel @VMInject constructor(
-    @TangleParam(EXTRA_KEY_PATH)
-    private val keyPath: FlipperKeyPath,
+class InfraredEditorViewModel @AssistedInject constructor(
+    @Assisted private val keyPath: FlipperKeyPath,
     private val simpleKeyApi: SimpleKeyApi,
     private val updateKeyApi: UpdateKeyApi,
     private val synchronizationApi: SynchronizationApi,
     context: Context
-) : ViewModel(), LogTagProvider {
+) : DecomposeViewModel(), LogTagProvider {
     override val TAG: String = "InfraredEditorViewModel"
 
     private var vibrator = ContextCompat.getSystemService(context, Vibrator::class.java)
@@ -60,7 +59,9 @@ class InfraredEditorViewModel @VMInject constructor(
         dialogStateFlow.emit(false)
     }
 
-    init { invalidate() }
+    init {
+        invalidate()
+    }
 
     private fun invalidate() {
         viewModelScope.launch(Dispatchers.Default) {
@@ -225,5 +226,12 @@ class InfraredEditorViewModel @VMInject constructor(
                 activeRemote = index
             )
         )
+    }
+
+    @AssistedFactory
+    fun interface Factory {
+        operator fun invoke(
+            keyPath: FlipperKeyPath
+        ): InfraredEditorViewModel
     }
 }

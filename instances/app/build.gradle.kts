@@ -26,7 +26,7 @@ dependencies {
     implementation(projects.components.core.ui.lifecycle)
 
     implementation(projects.components.core.ui.theme)
-    implementation(projects.components.core.ui.navigation)
+    implementation(projects.components.core.ui.decompose)
 
     implementation(projects.components.firstpair.api)
     implementation(projects.components.firstpair.impl)
@@ -50,6 +50,9 @@ dependencies {
 
     implementation(projects.components.singleactivity.api)
     implementation(projects.components.singleactivity.impl)
+
+    implementation(projects.components.rootscreen.api)
+    implementation(projects.components.rootscreen.impl)
 
     implementation(projects.components.deeplink.api)
     implementation(projects.components.deeplink.impl)
@@ -244,6 +247,8 @@ dependencies {
     implementation(libs.work.ktx)
     implementation(libs.ktorfit.lib)
 
+    implementation(libs.bundles.decompose)
+
     implementation(libs.coil.svg)
     implementation(libs.coil.compose)
     implementation(libs.compose.pager)
@@ -253,10 +258,6 @@ dependencies {
 
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
-    implementation(libs.tangle.viewmodel.api)
-    anvil(libs.tangle.viewmodel.compiler)
-    implementation(libs.tangle.fragment.api)
-    anvil(libs.tangle.fragment.compiler)
 
     implementation(libs.timber)
 }

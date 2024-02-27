@@ -9,21 +9,33 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialog
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialogModel
 import com.flipperdevices.core.ui.ktx.image.painterResourceByKey
+import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.notification.impl.R
 import com.flipperdevices.notification.viewmodel.NotificationDialogViewModel
 import com.squareup.anvil.annotations.ContributesBinding
-import tangle.viewmodel.compose.tangleViewModel
 import javax.inject.Inject
+import javax.inject.Provider
 
 @ContributesBinding(AppGraph::class, FlipperAppNotificationDialogApi::class)
-class FlipperAppNotificationDialogApiImpl @Inject constructor() : FlipperAppNotificationDialogApi {
+class FlipperAppNotificationDialogApiImpl @Inject constructor(
+    private val notificationDialogViewModelProvider: Provider<NotificationDialogViewModel>
+) : FlipperAppNotificationDialogApi, LogTagProvider {
+    override val TAG = "FlipperAppNotificationDialogApi"
+
     @Composable
-    override fun NotificationDialog() {
-        val dialogViewModel = tangleViewModel<NotificationDialogViewModel>()
+    @Suppress("NonSkippableComposable")
+    override fun NotificationDialog(
+        componentContext: ComponentContext
+    ) {
+        val dialogViewModel = componentContext.viewModelWithFactory(key = null) {
+            notificationDialogViewModelProvider.get()
+        }
         val isDialogShown by dialogViewModel.isNotificationShown().collectAsState()
 
         if (isDialogShown) {
