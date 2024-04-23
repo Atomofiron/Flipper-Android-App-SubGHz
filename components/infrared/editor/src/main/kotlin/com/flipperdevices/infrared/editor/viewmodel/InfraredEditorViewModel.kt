@@ -3,7 +3,6 @@ package com.flipperdevices.infrared.editor.viewmodel
 import android.content.Context
 import android.os.Vibrator
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.utils.FlipperSymbolFilter
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UpdateKeyApi
@@ -64,7 +63,7 @@ class InfraredEditorViewModel @AssistedInject constructor(
     }
 
     private fun invalidate() {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             val flipperKey = simpleKeyApi.getKey(keyPath)
             if (flipperKey == null) {
                 keyStateFlow.emit(InfraredEditorState.Error(R.string.infrared_editor_not_found_key))
@@ -94,7 +93,7 @@ class InfraredEditorViewModel @AssistedInject constructor(
     fun processSave(
         currentState: InfraredEditorState.Ready,
         onExitScreen: () -> Unit
-    ) = viewModelScope.launch(Dispatchers.Default) {
+    ) = viewModelScope.launch {
         if (isDirtyKey(currentState).not()) {
             withContext(Dispatchers.Main) {
                 onExitScreen()
@@ -142,7 +141,7 @@ class InfraredEditorViewModel @AssistedInject constructor(
     fun processCancel(
         currentState: InfraredEditorState,
         onExitScreen: () -> Unit
-    ) = viewModelScope.launch(Dispatchers.Default) {
+    ) = viewModelScope.launch {
         if (isDirtyKey(currentState)) {
             dialogStateFlow.emit(true)
         } else {
@@ -155,7 +154,7 @@ class InfraredEditorViewModel @AssistedInject constructor(
     fun processDeleteRemote(
         currentState: InfraredEditorState.Ready,
         index: Int
-    ) = viewModelScope.launch(Dispatchers.Default) {
+    ) = viewModelScope.launch {
         val remotes = currentState.remotes.toMutableList()
         remotes.removeAt(index)
 
@@ -179,7 +178,7 @@ class InfraredEditorViewModel @AssistedInject constructor(
         currentState: InfraredEditorState.Ready,
         from: Int,
         to: Int
-    ) = viewModelScope.launch(Dispatchers.Default) {
+    ) = viewModelScope.launch {
         val remotes = currentState.remotes.toMutableList()
         remotes.add(to, remotes.removeAt(from))
 
@@ -201,7 +200,7 @@ class InfraredEditorViewModel @AssistedInject constructor(
             value = value.substring(0, MAX_SIZE_REMOTE_LENGTH)
             vibrator?.vibrateCompat(VIBRATOR_TIME_MS)
         }
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             val remotes = currentState.remotes.toMutableList()
             remotes[index] = remotes[index].copy(name = value)
 
@@ -218,7 +217,7 @@ class InfraredEditorViewModel @AssistedInject constructor(
     fun processChangeIndexEditor(
         currentState: InfraredEditorState.Ready,
         index: Int
-    ) = viewModelScope.launch(Dispatchers.Default) {
+    ) = viewModelScope.launch {
         keyStateFlow.emit(
             InfraredEditorState.Ready(
                 remotes = currentState.remotes,

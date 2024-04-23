@@ -1,10 +1,10 @@
 package com.flipperdevices.firstpair.impl.viewmodels.connecting
 
 import android.annotation.SuppressLint
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.stateAsFlow
 import com.flipperdevices.bridge.api.scanner.DiscoveredBluetoothDevice
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -13,7 +13,6 @@ import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.firstpair.impl.model.DevicePairState
 import com.flipperdevices.firstpair.impl.storage.FirstPairStorage
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.cancelAndJoin
@@ -42,7 +41,7 @@ class PairDeviceViewModel(
         firstPairBleManagerFactory: FirstPairBleManager.Factory,
         firstPairStorage: FirstPairStorage,
         deviceColorSaver: DeviceColorSaver
-    ) : this(firstPairBleManagerFactory, firstPairStorage, deviceColorSaver, Dispatchers.Default)
+    ) : this(firstPairBleManagerFactory, firstPairStorage, deviceColorSaver, FlipperDispatchers.workStealingDispatcher)
 
     override val TAG = "PairDeviceViewModel"
 

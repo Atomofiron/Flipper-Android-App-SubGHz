@@ -2,8 +2,32 @@
 
 # 1.6.9 - In progress
 
+- [KMP] Migration core:test, core:ktx, core:ui:lifecycle
+- [KMP] Migration core:data
+- [KMP] Migration core:log
 - [Feature] Add ready app updates popup and notification dot
+- [Feature] Per app loading in installed tab
+- [Feature] Add ability to preview screenshots of fap entries
+- [Refactor] Migrate to markdown renderer from upstream
+- [Refactor] Basic implementation of new transport ble
+- [Refactor] Remove kapt from service modules
 - [FIX] Replace decompose push to move safety push
+- [FIX] Add fallback for parse url from "Open in App" URI
+- [FIX] Multiple internet connection placeholders on Hub Apps screen
+- [FIX] Find already paired Flipper devices without state filter
+- [FIX] Update flipper is busy image
+- [FIX] Fixed ComposableWearEmulate narrow layout
+- [FIX] Fixed wearOS blocking operations in WearableCommand streams
+- [FIX] Replace Dispatchers.Default with java's work stealing pool dispatcher
+- [FIX] Fixed wrong error display when turning off flipper during update
+- [FIX] Fixed serialization of ImmutableList in screenshotspreview
+- [FIX] Fixed wrong format of saved images on screenshotspreview and remote control
+- [FIX] Fixed low resolution of saved screenshots
+- [Feature] Add not connected, empty and syncing states to emulation button on key screen
+- [Feature] Check app exist on apps catalog manifest loading
+- [Feature] First version of device orchestrator
+- [Refactor] Use https://github.com/IlyaGulya/anvil-utils to automatically generate and contribute assisted factories.
+- [Refactor] Add test for Progress Tracker logic
 
 # 1.6.8
 

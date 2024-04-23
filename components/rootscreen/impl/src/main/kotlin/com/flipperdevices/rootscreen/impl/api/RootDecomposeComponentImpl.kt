@@ -15,7 +15,9 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.flipperdevices.bottombar.api.BottomBarDecomposeComponent
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.deeplink.model.Deeplink
+import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsPreviewDecomposeComponent
 import com.flipperdevices.firstpair.api.FirstPairApi
 import com.flipperdevices.firstpair.api.FirstPairDecomposeComponent
 import com.flipperdevices.keyscreen.api.KeyScreenDecomposeComponent
@@ -30,13 +32,13 @@ import com.flipperdevices.ui.decompose.popOr
 import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.api.UpdaterDecomposeComponent
 import com.flipperdevices.widget.api.WidgetDecomposeComponent
-import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import me.gulya.anvil.assisted.ContributesAssistedFactory
 
+@ContributesAssistedFactory(AppGraph::class, RootDecomposeComponent.Factory::class)
 @Suppress("LongParameterList")
 class RootDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
@@ -50,9 +52,10 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
     private val screenStreamingFactory: ScreenStreamingDecomposeComponent.Factory,
     private val widgetScreenFactory: WidgetDecomposeComponent.Factory,
     private val receiveKeyFactory: KeyReceiveDecomposeComponent.Factory,
-    private val keyScreenFactory: KeyScreenDecomposeComponent.Factory
+    private val keyScreenFactory: KeyScreenDecomposeComponent.Factory,
+    private val screenshotsPreviewFactory: ScreenshotsPreviewDecomposeComponent.Factory
 ) : RootDecomposeComponent, ComponentContext by componentContext {
-    private val scope = coroutineScope(Dispatchers.Default)
+    private val scope = coroutineScope(FlipperDispatchers.workStealingDispatcher)
     private val navigation = StackNavigation<RootScreenConfig>()
 
     private val stack: Value<ChildStack<RootScreenConfig, DecomposeComponent>> = childStack(
@@ -110,6 +113,12 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
             keyPath = config.flipperKeyPath,
             onBack = this::internalOnBack
         )
+
+        is RootScreenConfig.ScreenshotPreview -> screenshotsPreviewFactory(
+            componentContext = componentContext,
+            param = config.param,
+            onBack = this::internalOnBack
+        )
     }
 
     private fun getInitialConfiguration(deeplink: Deeplink?): List<RootScreenConfig> {
@@ -154,16 +163,8 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
             stack = childStack,
         ) {
             it.instance.Render()
-        }
-    }
 
-    @AssistedFactory
-    @ContributesBinding(AppGraph::class, RootDecomposeComponent.Factory::class)
-    interface Factory : RootDecomposeComponent.Factory {
-        override operator fun invoke(
-            componentContext: ComponentContext,
-            onBack: DecomposeOnBackParameter,
-            initialDeeplink: Deeplink?
-        ): RootDecomposeComponentImpl
+            Dispatchers.IO.limitedParallelism(2)
+        }
     }
 }

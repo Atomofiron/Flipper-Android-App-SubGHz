@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.ClipData
 import android.content.ClipboardManager
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.analytics.shake2report.impl.InternalShake2Report
 import com.flipperdevices.analytics.shake2report.impl.R
 import com.flipperdevices.analytics.shake2report.impl.model.Shake2ReportState
@@ -46,7 +45,7 @@ class Shake2ReportViewModel @Inject constructor(
         name: String,
         description: String,
         addLogs: Boolean
-    ) = viewModelScope.launch(Dispatchers.Default) {
+    ) = viewModelScope.launch {
         if (shake2ReportStateFlow.value !is Shake2ReportState.Pending) {
             return@launch
         }

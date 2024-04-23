@@ -1,6 +1,5 @@
 package com.flipperdevices.faphub.search.impl.viewmodel
 
-import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
@@ -9,7 +8,6 @@ import com.flipperdevices.core.pager.loadingPagingDataFlow
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
@@ -40,7 +38,7 @@ class FapHubSearchViewModel @Inject constructor(
     fun getSearchRequest() = searchRequestFlow.asStateFlow()
 
     fun onChangeSearchText(text: String) {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             searchRequestFlow.emit(text)
         }
     }

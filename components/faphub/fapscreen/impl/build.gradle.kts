@@ -7,6 +7,7 @@ plugins {
 android.namespace = "com.flipperdevices.faphub.fapscreen.impl"
 
 dependencies {
+    implementation(projects.components.faphub.screenshotspreview.api)
     implementation(projects.components.faphub.fapscreen.api)
     implementation(projects.components.faphub.errors.api)
 
@@ -37,6 +38,9 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.compose)
     implementation(libs.bundles.decompose)
+    implementation(libs.markdown.renderer) {
+        exclude(libs.fastutil.get().group)
+    }
 
     implementation(projects.components.inappnotification.api)
     implementation(projects.components.rootscreen.api)

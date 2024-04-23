@@ -6,7 +6,7 @@ import com.flipperdevices.buildlogic.SourceInstall
 
 plugins {
     id("flipper.android-app")
-    id("com.squareup.anvil")
+    id("flipper.anvil")
     id("kotlin-kapt")
     alias(libs.plugins.google.gms)
 }
@@ -207,6 +207,9 @@ dependencies {
 
     implementation(projects.components.faphub.errors.api)
     implementation(projects.components.faphub.errors.impl)
+
+    implementation(projects.components.faphub.screenshotspreview.api)
+    implementation(projects.components.faphub.screenshotspreview.impl)
 
     implementation(projects.components.faphub.utils)
 
