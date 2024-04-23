@@ -1,11 +1,11 @@
 package com.flipperdevices.updater.downloader.api
 
 import android.content.Context
+import com.flipperdevices.core.DOUBLE_Q
+import com.flipperdevices.core.WW
+import com.flipperdevices.core.ZERO
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.log.DOUBLE_Q
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.core.log.WW
-import com.flipperdevices.core.log.ZERO
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.preference.FlipperStorageProvider
