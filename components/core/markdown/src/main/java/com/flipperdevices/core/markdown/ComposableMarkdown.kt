@@ -37,7 +37,7 @@ fun ComposableMarkdown(
 
 @Composable
 fun markdownColors(
-    backgroundCode: Color = LocalPallet.current.text20,
+    backgroundCode: Color = LocalPallet.current.text8,
     text: Color = LocalPallet.current.text100,
     link: Color = LocalPallet.current.accentSecond,
     dividerColor: Color = LocalPallet.current.divider12
@@ -47,7 +47,8 @@ fun markdownColors(
     linkText = link,
     codeBackground = backgroundCode,
     inlineCodeBackground = backgroundCode,
-    dividerColor = dividerColor
+    dividerColor = dividerColor,
+    inlineCodeText = text
 )
 
 @Composable

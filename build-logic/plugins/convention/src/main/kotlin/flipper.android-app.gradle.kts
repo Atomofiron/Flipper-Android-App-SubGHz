@@ -57,6 +57,7 @@ configure<BaseExtension> {
 
 configure<SentryPluginExtension> {
     autoUploadProguardMapping.set(IS_SENTRY_PUBLISH)
+    telemetry.set(false)
 
     ignoredBuildTypes.set(setOf("release", "debug"))
 

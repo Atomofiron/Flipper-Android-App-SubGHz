@@ -24,7 +24,7 @@ rootProject.name = "FlipperApp"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 include(
-    ":instances:app",
+    ":instances:android:app",
     ":instances:wearable",
     ":components:bridge:api",
     ":components:bridge:impl",
@@ -42,15 +42,35 @@ include(
     ":components:bridge:synchronization:ui",
     ":components:bridge:dao:api",
     ":components:bridge:dao:impl",
-    ":components:bridge:connection:ble:api",
-    ":components:bridge:connection:ble:impl",
+
+    ":components:bridge:connection:transport:ble:api",
+    ":components:bridge:connection:transport:ble:impl",
+    ":components:bridge:connection:transport:common:api",
+    ":components:bridge:connection:transport:common:impl",
     ":components:bridge:connection:orchestrator:api",
     ":components:bridge:connection:orchestrator:impl",
     ":components:bridge:connection:connectionbuilder:api",
     ":components:bridge:connection:connectionbuilder:impl",
-    ":components:bridge:connection:common:api",
-    ":components:bridge:connection:common:impl",
     ":components:bridge:connection:sample",
+    ":components:bridge:connection:config:api",
+    ":components:bridge:connection:config:impl",
+    ":components:bridge:connection:transportconfigbuilder:api",
+    ":components:bridge:connection:transportconfigbuilder:impl",
+    ":components:bridge:connection:device:common:api",
+    ":components:bridge:connection:device:fzero:api",
+    ":components:bridge:connection:device:fzero:impl",
+    ":components:bridge:connection:feature:common:api",
+    ":components:bridge:connection:feature:provider:api",
+    ":components:bridge:connection:feature:provider:impl",
+    ":components:bridge:connection:feature:rpc:api",
+    ":components:bridge:connection:feature:rpc:impl",
+    ":components:bridge:connection:feature:rpc:model",
+    ":components:bridge:connection:feature:restartrpc:api",
+    ":components:bridge:connection:feature:restartrpc:impl",
+    ":components:bridge:connection:feature:lagsdetector:api",
+    ":components:bridge:connection:feature:lagsdetector:impl",
+    ":components:bridge:connection:feature:serialspeed:api",
+    ":components:bridge:connection:feature:serialspeed:impl",
 
     ":components:filemanager:api",
     ":components:filemanager:impl",
@@ -60,6 +80,7 @@ include(
     ":components:core:log",
     ":components:core:preference",
     ":components:core:data",
+    ":components:core:build-konfig",
     ":components:core:ui:ktx",
     ":components:core:ui:res",
     ":components:core:ui:dialog",
@@ -69,6 +90,7 @@ include(
     ":components:core:ui:hexkeyboard",
     ":components:core:ui:tabswitch",
     ":components:core:ui:flippermockup",
+    ":components:core:ui:scrollbar",
     ":components:core:ui:decompose",
     ":components:core:test",
     ":components:core:markdown",
@@ -149,6 +171,9 @@ include(
     ":components:settings:api",
     ":components:settings:impl",
 
+    ":components:changelog:api",
+    ":components:changelog:impl",
+
     ":components:updater:api",
     ":components:updater:impl",
     ":components:updater:screen",
@@ -189,11 +214,8 @@ include(
     ":components:nfc:attack:api",
     ":components:nfc:attack:impl",
 
-    ":components:hub:api",
-    ":components:hub:impl",
-
-    ":components:faphub:maincard:api",
-    ":components:faphub:maincard:impl",
+    ":components:toolstab:api",
+    ":components:toolstab:impl",
     ":components:faphub:appcard:api",
     ":components:faphub:appcard:composable",
     ":components:faphub:dao:api",
@@ -249,4 +271,6 @@ include(
 
     ":components:rootscreen:api",
     ":components:rootscreen:impl",
+
+    ":instances:android:baselineprofile"
 )

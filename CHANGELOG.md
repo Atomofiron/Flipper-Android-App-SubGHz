@@ -1,6 +1,15 @@
 # Changelog
 
-# 1.6.9 - In progress
+
+# 1.6.10 - In Progress
+
+- [KMP] Migration core:activityholder, core:di, core:progpress, core:ui:decompose
+- [Feature] Add new FlipperPallet
+- [Feature] Add changelog screen
+- [Feature] Add apps tab to bottom tab
+- [Feature] Move remote control to device tab
+
+# 1.6.9
 
 - [KMP] Migration core:test, core:ktx, core:ui:lifecycle
 - [KMP] Migration core:data
@@ -8,6 +17,7 @@
 - [Feature] Add ready app updates popup and notification dot
 - [Feature] Per app loading in installed tab
 - [Feature] Add ability to preview screenshots of fap entries
+- [Feature] Add Baseline Profiles generation
 - [Refactor] Migrate to markdown renderer from upstream
 - [Refactor] Basic implementation of new transport ble
 - [Refactor] Remove kapt from service modules
@@ -23,9 +33,29 @@
 - [FIX] Fixed serialization of ImmutableList in screenshotspreview
 - [FIX] Fixed wrong format of saved images on screenshotspreview and remote control
 - [FIX] Fixed low resolution of saved screenshots
+- [FIX] Update sentry gradle to 4.5.1
+- [FIX] Ping-pong request on new ble sample
+- [FIX] Potential MD5 collision of keys
+- [FIX] Wrong error display on categories screen when no internet connection
+- [FIX] Using third-party Github Action Setup Android SDK for baseline profile generation
+- [FIX] Manifest dev catalog flag on installed apps
+- [FIX] Padding for self update in-app notification
+- [FIX] Settings status bar overflow content
+- [FIX] Fix TopBar above system bar in file manager file edit screen
+- [FIX] Fix custom version detection
+- [FIX] Text overflow on apps card
+- [FIX] SD Card error on installed screen
+- [FIX] Scrolling of zoomed screenshots in app image preview
+- [FIX] Infrared editor screen bottom navigation padding
+- [FIX] Display MfKey32 loading progress when no keys available
+- [FIX] Return baseline profiles
+- [FIX] Markdown code blocks background color
 - [Feature] Add not connected, empty and syncing states to emulation button on key screen
 - [Feature] Check app exist on apps catalog manifest loading
 - [Feature] First version of device orchestrator
+- [Feature] Add sample for flipper reconnecting
+- [Feature] Add new feature provider with rpc feature
+- [Feature] Cancel previous pipelines on Github CI after push new commits to PR 
 - [Refactor] Use https://github.com/IlyaGulya/anvil-utils to automatically generate and contribute assisted factories.
 - [Refactor] Add test for Progress Tracker logic
 

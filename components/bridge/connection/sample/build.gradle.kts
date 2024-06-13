@@ -6,8 +6,6 @@ plugins {
 }
 
 android.namespace = "com.flipperdevices.bridge.connection"
-// TODO remove it
-anvil.generateDaggerFactories = false
 
 android {
     buildFeatures.compose = true
@@ -32,14 +30,36 @@ dependencies {
     implementation(projects.components.core.log)
     implementation(projects.components.core.preference)
 
-    implementation(projects.components.bridge.connection.ble.api)
-    implementation(projects.components.bridge.connection.ble.impl)
-    implementation(projects.components.bridge.connection.common.api)
-    implementation(projects.components.bridge.connection.common.impl)
+    implementation(projects.components.bridge.connection.transport.ble.api)
+    implementation(projects.components.bridge.connection.transport.ble.impl)
+    implementation(projects.components.bridge.connection.transport.common.api)
+    implementation(projects.components.bridge.connection.transport.common.impl)
     implementation(projects.components.bridge.connection.orchestrator.api)
     implementation(projects.components.bridge.connection.orchestrator.impl)
     implementation(projects.components.bridge.connection.connectionbuilder.api)
     implementation(projects.components.bridge.connection.connectionbuilder.impl)
+    implementation(projects.components.bridge.connection.config.api)
+    implementation(projects.components.bridge.connection.config.impl)
+    implementation(projects.components.bridge.connection.transportconfigbuilder.api)
+    implementation(projects.components.bridge.connection.transportconfigbuilder.impl)
+    implementation(projects.components.bridge.connection.device.common.api)
+    implementation(projects.components.bridge.connection.device.fzero.api)
+    implementation(projects.components.bridge.connection.device.fzero.impl)
+    implementation(projects.components.bridge.connection.feature.common.api)
+    implementation(projects.components.bridge.connection.feature.lagsdetector.api)
+    implementation(projects.components.bridge.connection.feature.lagsdetector.impl)
+    implementation(projects.components.bridge.connection.feature.provider.api)
+    implementation(projects.components.bridge.connection.feature.provider.impl)
+    implementation(projects.components.bridge.connection.feature.restartrpc.api)
+    implementation(projects.components.bridge.connection.feature.restartrpc.impl)
+    implementation(projects.components.bridge.connection.feature.rpc.api)
+    implementation(projects.components.bridge.connection.feature.rpc.impl)
+    implementation(projects.components.bridge.connection.feature.serialspeed.api)
+    implementation(projects.components.bridge.connection.feature.serialspeed.impl)
+
+    implementation(projects.components.analytics.shake2report.api)
+    implementation(projects.components.analytics.shake2report.noop)
+
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.pbutils)
 
