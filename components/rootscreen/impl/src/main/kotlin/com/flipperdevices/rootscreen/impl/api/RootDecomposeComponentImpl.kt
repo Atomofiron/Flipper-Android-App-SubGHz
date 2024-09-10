@@ -22,6 +22,8 @@ import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsPreviewDecomp
 import com.flipperdevices.firstpair.api.FirstPairApi
 import com.flipperdevices.firstpair.api.FirstPairDecomposeComponent
 import com.flipperdevices.keyscreen.api.KeyScreenDecomposeComponent
+import com.flipperdevices.remotecontrols.api.ConfigureGridDecomposeComponent
+import com.flipperdevices.remotecontrols.api.model.ServerRemoteControlParam
 import com.flipperdevices.rootscreen.api.RootDecomposeComponent
 import com.flipperdevices.rootscreen.impl.deeplink.RootDeeplinkHandler
 import com.flipperdevices.rootscreen.model.RootScreenConfig
@@ -55,7 +57,8 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
     private val receiveKeyFactory: KeyReceiveDecomposeComponent.Factory,
     private val keyScreenFactory: KeyScreenDecomposeComponent.Factory,
     private val screenshotsPreviewFactory: ScreenshotsPreviewDecomposeComponent.Factory,
-    private val changelogScreenDecomposeFactory: ChangelogScreenDecomposeComponent.Factory
+    private val changelogScreenDecomposeFactory: ChangelogScreenDecomposeComponent.Factory,
+    private val serverRemoteControlFactory: ConfigureGridDecomposeComponent.Factory
 ) : RootDecomposeComponent, ComponentContext by componentContext {
     private val scope = coroutineScope(FlipperDispatchers.workStealingDispatcher)
     private val navigation = StackNavigation<RootScreenConfig>()
@@ -69,6 +72,7 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
     )
     private val deeplinkHandler = RootDeeplinkHandler(navigation, stack, firstPairApi)
 
+    @Suppress("LongMethod")
     private fun child(
         config: RootScreenConfig,
         componentContext: ComponentContext
@@ -127,6 +131,15 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
             updateRequest = config.updateRequest,
             onBack = this::internalOnBack
         )
+
+        is RootScreenConfig.ServerRemoteControl -> serverRemoteControlFactory(
+            componentContext = componentContext,
+            param = ServerRemoteControlParam(
+                infraredFileId = config.infraredFileId,
+                remoteName = config.remoteName
+            ),
+            onBack = this::internalOnBack,
+        )
     }
 
     private fun getInitialConfiguration(deeplink: Deeplink?): List<RootScreenConfig> {
@@ -171,8 +184,6 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
             stack = childStack,
         ) {
             it.instance.Render()
-
-            Dispatchers.IO.limitedParallelism(2)
         }
     }
 }

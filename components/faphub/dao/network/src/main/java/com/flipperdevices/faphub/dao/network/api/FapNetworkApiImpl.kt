@@ -1,6 +1,7 @@
 package com.flipperdevices.faphub.dao.network.api
 
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.debug
 import com.flipperdevices.core.log.warn
@@ -8,27 +9,26 @@ import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.SortType
 import com.flipperdevices.faphub.dao.network.helper.FapApplicationReceiveHelper
-import com.flipperdevices.faphub.dao.network.ktorfit.api.KtorfitApplicationApi
-import com.flipperdevices.faphub.dao.network.ktorfit.model.requests.KtorfitApplicationApiRequest
-import com.flipperdevices.faphub.dao.network.ktorfit.utils.FapHubNetworkCategoryApi
-import com.flipperdevices.faphub.dao.network.ktorfit.utils.HostUrlBuilder
+import com.flipperdevices.faphub.dao.network.network.api.FapNetworkApplicationApi
+import com.flipperdevices.faphub.dao.network.network.model.FapNetworkHostEnum
+import com.flipperdevices.faphub.dao.network.network.model.requests.KtorfitApplicationApiRequest
+import com.flipperdevices.faphub.dao.network.network.utils.FapCachedCategoryApi
 import com.flipperdevices.faphub.errors.api.throwable.FirmwareNotSupported
 import com.flipperdevices.faphub.target.model.FlipperTarget
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, FapNetworkApi::class)
 class FapNetworkApiImpl @Inject constructor(
-    private val applicationApi: KtorfitApplicationApi,
-    private val categoryApi: FapHubNetworkCategoryApi,
-    private val hostUrlBuilder: HostUrlBuilder,
+    private val applicationApi: FapNetworkApplicationApi,
+    private val categoryApi: FapCachedCategoryApi,
+    private val networkHost: FapNetworkHostEnum,
     private val fapApplicationReceiveHelper: FapApplicationReceiveHelper
 ) : FapNetworkApi, LogTagProvider {
     override val TAG = "FapNetworkApi"
 
-    override suspend fun getHostUrl() = hostUrlBuilder.getHostUrl()
+    override suspend fun getHostUrl() = networkHost.hostUrl
     override suspend fun getFeaturedItem(target: FlipperTarget) = catchWithDispatcher {
         debug { "Request featured item" }
 
@@ -157,5 +157,5 @@ class FapNetworkApiImpl @Inject constructor(
 private suspend fun <T> catchWithDispatcher(
     block: suspend () -> T
 ): Result<T> = runCatching {
-    return@runCatching withContext(Dispatchers.IO) { block() }
+    return@runCatching withContext(FlipperDispatchers.workStealingDispatcher) { block() }
 }

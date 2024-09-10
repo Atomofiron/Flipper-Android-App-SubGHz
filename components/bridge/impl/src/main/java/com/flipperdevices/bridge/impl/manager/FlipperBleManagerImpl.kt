@@ -171,11 +171,11 @@ class FlipperBleManagerImpl @Inject constructor(
             error(it) { "Error while initialize RTC" }
         }
 
-        flipperReadyListeners.forEach {
+        flipperReadyListeners.forEach { listener ->
             runCatching {
-                it.onFlipperReady(scope)
-            }.onFailure {
-                error(it) { "Failed notify flipper ready listener" }
+                listener.onFlipperReady(scope)
+            }.onFailure { error ->
+                error(error) { "Failed notify flipper ready listener" }
             }
         }
 
@@ -203,7 +203,7 @@ class FlipperBleManagerImpl @Inject constructor(
             error(it) { "Can't find service for version api" }
             setDeviceSupportedStatus(
                 runBlockingWithLog {
-                    if (settingsStore.data.first().ignoreUnsupportedVersion) {
+                    if (settingsStore.data.first().ignore_unsupported_version) {
                         FlipperSupportedState.READY
                     } else {
                         FlipperSupportedState.DEPRECATED_FLIPPER

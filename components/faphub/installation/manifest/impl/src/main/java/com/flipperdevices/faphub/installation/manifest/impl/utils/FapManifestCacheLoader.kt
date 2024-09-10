@@ -2,13 +2,13 @@ package com.flipperdevices.faphub.installation.manifest.impl.utils
 
 import android.content.Context
 import com.flipperdevices.bridge.rpc.api.FlipperStorageApi
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.md5
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.ktx.jre.withLockResult
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -34,6 +34,7 @@ class FapManifestCacheLoader @Inject constructor(
         val namesWithHash = flipperStorageApi
             .listingDirectoryWithMd5(FapManifestConstants.FAP_MANIFESTS_FOLDER_ON_FLIPPER)
             .filter { File(it.name).extension == FapManifestConstants.FAP_MANIFEST_EXTENSION }
+            .filterNot { it.name.startsWith(".") }
         val filesWithHash = getLocalFilesWithHash().associate { (file, md5) -> md5 to file }
         info { "Find ${filesWithHash.size} files in cache" }
         val cached = mutableListOf<Pair<File, String>>()
@@ -57,7 +58,7 @@ class FapManifestCacheLoader @Inject constructor(
     suspend fun invalidate(
         manifestItems: List<FapManifestItem>
     ) = withLock(mutex, "invalidate") {
-        withContext(Dispatchers.IO) {
+        withContext(FlipperDispatchers.workStealingDispatcher) {
             if (!cacheDir.exists()) {
                 cacheDir.mkdirs()
             }
@@ -87,9 +88,9 @@ class FapManifestCacheLoader @Inject constructor(
     }
 
     private suspend fun getLocalFilesWithHash(): List<Pair<File, String>> =
-        withContext(Dispatchers.IO) {
+        withContext(FlipperDispatchers.workStealingDispatcher) {
             return@withContext cacheDir.listFiles()?.map {
                 it to it.name
-            } ?: emptyList()
+            }.orEmpty()
         }
 }

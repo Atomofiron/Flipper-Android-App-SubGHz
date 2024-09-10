@@ -8,11 +8,7 @@ object ApkConfig {
 
     const val MIN_SDK_VERSION = 26
 
-    /**
-     * Don't update until Google Play allows uploading WearOS apps with target sdk greater than 33
-     * https://developer.android.com/google/play/requirements/target-sdk
-     */
-    const val TARGET_SDK_VERSION = 33
+    const val TARGET_SDK_VERSION = 34
     const val COMPILE_SDK_VERSION = 34
 
     private const val DEBUG_VERSION = "GitHub dev"
@@ -54,7 +50,7 @@ object ApkConfig {
     val Project.CURRENT_FLAVOR_TYPE: FlavorType
         get() {
             val default = FlavorType.DEV
-            val key = "CURRENT_FLAVOR_TYPE"
+            val key = "current_flavor_type"
             val propValue = propOrNull(key)
             if (propValue == null) {
                 logger.warn("Property $key was not found, writing default $default")

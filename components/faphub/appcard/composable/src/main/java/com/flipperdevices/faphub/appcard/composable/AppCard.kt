@@ -56,8 +56,8 @@ fun AppCard(
         )
         AppCardScreenshots(
             screenshots = fapItem?.screenshots,
-            onScreenshotClicked = onScreenshotClicked@{ index ->
-                val requireFapItem = fapItem ?: return@onScreenshotClicked
+            onScreenshotClick = onScreenshotClick@{ index ->
+                val requireFapItem = fapItem ?: return@onScreenshotClick
                 val param = ScreenshotsPreviewParam(
                     title = requireFapItem.name,
                     screenshotsUrls = requireFapItem.screenshots,
@@ -77,7 +77,7 @@ fun AppCard(
 private fun AppCardTop(
     fapItem: FapItemShort?,
     modifier: Modifier = Modifier,
-    installationButton: @Composable (modifier: Modifier) -> Unit
+    installationButton: @Composable (Modifier) -> Unit
 ) {
     Row(
         modifier = modifier
@@ -110,7 +110,7 @@ private fun AppCardTop(
             )
         }
         installationButton(
-            modifier = Modifier
+            Modifier
                 .fillMaxHeight()
                 .padding(vertical = 4.dp)
         )

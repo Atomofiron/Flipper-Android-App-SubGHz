@@ -7,6 +7,7 @@ import com.flipperdevices.bridge.api.manager.service.FlipperInformationApi
 import com.flipperdevices.bridge.api.model.FlipperGATTInformation
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.impl.manager.UnsafeBleManager
+import com.flipperdevices.bridge.impl.utils.Shake2ReportHelper
 import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
@@ -39,7 +40,7 @@ class FlipperInformationApiImpl @Inject constructor(
 ) : BluetoothGattServiceWrapper, FlipperInformationApi, LogTagProvider {
     override val TAG = "FlipperInformationApi"
     private val informationState = MutableStateFlow(FlipperGATTInformation())
-    private var infoCharacteristics = mutableMapOf<UUID, BluetoothGattCharacteristic>()
+    private val infoCharacteristics = mutableMapOf<UUID, BluetoothGattCharacteristic>()
 
     private val scope by scopeProvider
     private val metricApi by metricApiProvider
@@ -48,7 +49,7 @@ class FlipperInformationApiImpl @Inject constructor(
 
     init {
         informationState.onEach {
-            shake2ReportApi.updateGattInformation(it)
+            Shake2ReportHelper.updateGattInformation(shake2ReportApi, it)
         }.launchIn(scope + FlipperDispatchers.workStealingDispatcher)
     }
 
@@ -181,9 +182,9 @@ class FlipperInformationApiImpl @Inject constructor(
                         .replaceFirst(Constants.DEVICENAME_PREFIX, "")
                         .trim()
                 }
-                it.toBuilder()
-                    .setDeviceName(deviceNameFormatted)
-                    .build()
+                it.copy(
+                    device_name = deviceNameFormatted
+                )
             }
         }
     }

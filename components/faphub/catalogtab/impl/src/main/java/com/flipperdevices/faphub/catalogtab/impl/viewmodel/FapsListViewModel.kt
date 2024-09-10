@@ -6,6 +6,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.flipperdevices.bridge.dao.api.FapHubHideItemApi
+import com.flipperdevices.core.pager.distinctBy
 import com.flipperdevices.core.pager.loadingPagingDataFlow
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
@@ -15,6 +16,7 @@ import com.flipperdevices.faphub.dao.api.model.SortType
 import com.flipperdevices.faphub.dao.api.model.SortType.Companion.toSortType
 import com.flipperdevices.faphub.installation.manifest.api.FapManifestApi
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -38,12 +40,13 @@ class FapsListViewModel @Inject constructor(
         dataStoreSettings
             .data
             .onEach {
-                sortStateFlow.emit(it.selectedCatalogSort.toSortType())
+                sortStateFlow.emit(it.selected_catalog_sort.toSortType())
             }.launchIn(viewModelScope)
     }
 
     fun getSortTypeFlow() = sortStateFlow.asStateFlow()
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private val faps = combine(
         sortStateFlow,
         targetProviderApi.getFlipperTarget(),
@@ -57,16 +60,16 @@ class FapsListViewModel @Inject constructor(
         ) {
             FapsPagingSource(fapNetworkApi, sortType, target, hiddenItems)
         }.flow
-    }.flatMapLatest { it }.cachedIn(viewModelScope)
+    }.flatMapLatest { it }.distinctBy { it.id }.cachedIn(viewModelScope)
 
     fun getFapsFlow(): Flow<PagingData<FapItemShort>> = faps
 
     fun onSelectSortType(sortType: SortType) {
         viewModelScope.launch {
             dataStoreSettings.updateData {
-                it.toBuilder()
-                    .setSelectedCatalogSort(sortType.toSelectedSortType())
-                    .build()
+                it.copy(
+                    selected_catalog_sort = sortType.toSelectedSortType()
+                )
             }
         }
     }

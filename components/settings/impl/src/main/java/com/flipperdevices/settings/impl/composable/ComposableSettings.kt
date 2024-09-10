@@ -62,12 +62,12 @@ fun ComposableSettings(
         ) {
             OrangeAppBar(R.string.options, onBack = onBack)
             AppCategory(
-                theme = settings.selectedTheme,
+                theme = settings.selected_theme,
                 onSelectTheme = settingsViewModel::onChangeSelectedTheme,
                 notificationState = notificationState,
                 onChangeNotificationState = notificationViewModel::switchToggle
             )
-            if (settings.expertMode) {
+            if (settings.expert_mode) {
                 DebugCategory(
                     settings = settings,
                     onSwitchDebug = settingsViewModel::onSwitchDebug,
@@ -78,7 +78,7 @@ fun ComposableSettings(
             ExperimentalCategory(
                 settings = settings,
                 onSwitchExperimental = settingsViewModel::onSwitchExperimental,
-                onOpenFM = { onOpen(SettingsNavigationConfig.FileManager) }
+                onOpenFM = { onOpen(SettingsNavigationConfig.FileManager) },
             )
             ExportKeysCategory(
                 exportState = exportState,

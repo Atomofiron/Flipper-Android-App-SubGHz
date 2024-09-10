@@ -1,6 +1,6 @@
 plugins {
     id("flipper.android-app")
-    id("flipper.anvil")
+    id("flipper.anvil.kapt")
     id("kotlin-kapt")
     id("kotlinx-serialization")
 }
@@ -9,9 +9,6 @@ android.namespace = "com.flipperdevices.bridge.connection"
 
 android {
     buildFeatures.compose = true
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-    }
 }
 
 android {
@@ -46,22 +43,35 @@ dependencies {
     implementation(projects.components.bridge.connection.device.fzero.api)
     implementation(projects.components.bridge.connection.device.fzero.impl)
     implementation(projects.components.bridge.connection.feature.common.api)
+    implementation(projects.components.bridge.connection.feature.getinfo.api)
+    implementation(projects.components.bridge.connection.feature.getinfo.impl)
     implementation(projects.components.bridge.connection.feature.lagsdetector.api)
     implementation(projects.components.bridge.connection.feature.lagsdetector.impl)
+    implementation(projects.components.bridge.connection.feature.protocolversion.api)
+    implementation(projects.components.bridge.connection.feature.protocolversion.impl)
     implementation(projects.components.bridge.connection.feature.provider.api)
     implementation(projects.components.bridge.connection.feature.provider.impl)
     implementation(projects.components.bridge.connection.feature.restartrpc.api)
     implementation(projects.components.bridge.connection.feature.restartrpc.impl)
     implementation(projects.components.bridge.connection.feature.rpc.api)
     implementation(projects.components.bridge.connection.feature.rpc.impl)
+    implementation(projects.components.bridge.connection.feature.rpcinfo.api)
+    implementation(projects.components.bridge.connection.feature.rpcinfo.impl)
+    implementation(projects.components.bridge.connection.feature.rpcstats.api)
+    implementation(projects.components.bridge.connection.feature.rpcstats.impl)
     implementation(projects.components.bridge.connection.feature.serialspeed.api)
     implementation(projects.components.bridge.connection.feature.serialspeed.impl)
+    implementation(projects.components.bridge.connection.feature.storageinfo.api)
+    implementation(projects.components.bridge.connection.feature.storageinfo.impl)
 
     implementation(projects.components.analytics.shake2report.api)
     implementation(projects.components.analytics.shake2report.noop)
 
+    implementation(projects.components.analytics.metric.api)
+    implementation(projects.components.analytics.metric.noop)
+
     implementation(projects.components.bridge.api)
-    implementation(projects.components.bridge.pbutils)
+    implementation(projects.components.bridge.connection.pbutils)
 
     implementation(libs.appcompat)
 

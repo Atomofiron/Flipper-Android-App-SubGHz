@@ -3,12 +3,9 @@ package com.flipperdevices.bridge.api.scanner
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothDevice
 import android.os.ParcelUuid
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
 import no.nordicsemi.android.support.v18.scanner.ScanResult
 import java.util.UUID
 
-@Parcelize
 data class DiscoveredBluetoothDevice(
     val device: BluetoothDevice,
     private var lastScanResult: ScanResult? = null,
@@ -17,14 +14,14 @@ data class DiscoveredBluetoothDevice(
     private var previousRssi: Int,
     private var highestRssiInternal: Int = Byte.MIN_VALUE.toInt(),
     private var servicesResult: List<ParcelUuid>? = null
-) : Parcelable {
+) {
     // Wrapper for data variables
     val address: String get() = device.address
     val scanResult: ScanResult? get() = lastScanResult
     val name: String? get() = nameInternal
     val rssi: Int get() = rssiInternal
     val highestRssi: Int get() = highestRssiInternal
-    val services: List<UUID> get() = servicesResult?.map { it.uuid } ?: emptyList()
+    val services: List<UUID> get() = servicesResult?.map { it.uuid }.orEmpty()
 
     constructor(scanResult: ScanResult) : this(
         device = scanResult.device,

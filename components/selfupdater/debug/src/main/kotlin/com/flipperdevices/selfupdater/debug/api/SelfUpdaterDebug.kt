@@ -25,18 +25,18 @@ class SelfUpdaterDebug @Inject constructor(
     override val TAG = "SelfUpdaterDebug"
 
     override suspend fun checkUpdate(manual: Boolean): SelfUpdateResult {
-        val isFlagDebug = dataStoreSettings.data.map { it.selfUpdaterDebug }.first()
+        val isFlagDebug = dataStoreSettings.data.map { it.self_updater_debug }.first()
         if (!isFlagDebug) {
             info { "Self Updater in Debug Mode disable" }
             return SelfUpdateResult.ERROR
         }
 
         delay(NOTIFICATION_DEBUG_DELAY_MS)
-        return debugNoUpdates(manual)
+        return debugNoUpdates()
     }
 
     @Suppress("UnusedPrivateMember")
-    private fun debugSuccessUpdate(manual: Boolean): SelfUpdateResult {
+    private fun debugSuccessUpdate(): SelfUpdateResult {
         val startUpdateNotification = InAppNotification.SelfUpdateStarted()
         val readyUpdateNotification = InAppNotification.SelfUpdateReady(
             action = { inAppNotificationStorage.addNotification(startUpdateNotification) },
@@ -45,8 +45,7 @@ class SelfUpdaterDebug @Inject constructor(
         return SelfUpdateResult.COMPLETE
     }
 
-    @Suppress("UnusedPrivateMember")
-    private fun debugNoUpdates(manual: Boolean): SelfUpdateResult {
+    private fun debugNoUpdates(): SelfUpdateResult {
         return SelfUpdateResult.NO_UPDATES
     }
 

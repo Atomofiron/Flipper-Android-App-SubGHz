@@ -1,13 +1,66 @@
 # Changelog
 
+# 1.7.2 - In Progress
+Attention: don't forget to add the flag for F-Droid before release
 
-# 1.6.10 - In Progress
+
+- [Feature] Add rpcinfo feature to new BLE api
+- [Feature] Infrared controls
+- [Feature] Remove bond on retry pair
+- [Feature] Add onetap widget
+- [Feature] Save, edit, share remote control
+- [Feature] More UI elements for remote-controls
+- [Feature] Add How to Use dialog into remote-controls
+- [Feature] Skip infrared signals on setup screen
+- [Feature] Better user-ux when configuring remote control
+- [Feature] Add flipper action dialogs into remote control and move it into bottombar
+- [Refactor] Load RemoteControls from flipper, emulating animation
+- [Refactor] Update to Kotlin 2.0
+- [Refactor] Replace Ktorfit with Ktor requests in remote-controls
+- [Refactor] Migrate :core:preference to KMP
+- [Refactor] Migrate :bridge:connection:* to KMP
+- [Refactor] Migrate :bridge:synchronization, :core:ktx and :core:theme to KMP
+- [Refactor] Remove ktorfit
+- [FIX] Distinct fap items by id in paging sources
+- [FIX] Battery level charge
+- [FIX] Button arrow tint
+- [FIX] Paddings for update button
+- [FIX] Crash on app startup with WearOS app
+- [FIX] Expand verify signal bottom sheet only after signal is dispatched
+- [FIX] Fix scroll on save edit screen
+- [FIX] Update Infrared backend integration
+- [FIX] Ignore faps manifest with point in start
+- [FIX] Use kotlin 2.0.20-RC2 for bypass Options screen crash
+- [FIX] Relocate remote-controls button to infrared remotes screen
+- [FIX] Fap manifest caching
+- [FIX] Remote controls design issues
+- [FIX] Fix flaky test
+- [FIX] Infinite dispatch after screen close on remote-control screens
+- [FIX] Bad bottom sheet animation on infrared setup screen
+- [CI] Fix merge-queue files diff
+- [CI] Add https://github.com/LionZXY/detekt-decompose-rule
+- [CI] Enabling detekt module for android and kmp modules
+- [CI] Bump target SDK to 34
+- [CI] Update deps
+- [CI] Merge CI workflows in one
+- [CI] Update CI changed-files action
+- [CI] Update CI for github runners
+- [CI] Remote self-hosted runners
+
+# 1.7.1
+
+- Fix for a vulnerability causing write access to internal application files
+
+# 1.7.0
 
 - [KMP] Migration core:activityholder, core:di, core:progpress, core:ui:decompose
 - [Feature] Add new FlipperPallet
 - [Feature] Add changelog screen
 - [Feature] Add apps tab to bottom tab
 - [Feature] Move remote control to device tab
+- [Feature] Move MfKey to tools tab
+- [FIX] Fix color of connection tab icon
+- [FIX] Fix badge outline on tab and MfKey
 
 # 1.6.9
 

@@ -2,8 +2,10 @@ package com.flipperdevices.bridge.service.impl
 
 import android.content.Intent
 import android.os.Binder
+import android.os.Build
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
+import com.flipperdevices.bridge.api.utils.PermissionHelper
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.impl.di.FlipperBleServiceComponent
 import com.flipperdevices.bridge.service.impl.di.FlipperServiceComponent
@@ -17,6 +19,7 @@ import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.runBlockingWithLog
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -49,12 +52,21 @@ class FlipperService : LifecycleService(), LogTagProvider {
 
         val dataStoreSettings = component.dataStoreSettings.get()
 
-        if (runBlockingWithLog { dataStoreSettings.data.first() }.usedForegroundService) {
+        if (runBlockingWithLog { dataStoreSettings.data.first() }.used_foreground_service) {
             val flipperNotificationLocal = FlipperNotificationHelper(
                 context = this,
                 applicationParams = component.applicationParams
             )
             flipperNotification = flipperNotificationLocal
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE &&
+                PermissionHelper.getUngrantedPermission(
+                    this,
+                    PermissionHelper.getRequiredPermissions()
+                ).isNotEmpty()
+            ) {
+                error { "Can't launch foreground service on Android API 34 and upper without bluetooth permission" }
+                return
+            }
             startForeground(FLIPPER_NOTIFICATION_ID, flipperNotificationLocal.show())
             flipperNotificationLocal.showStopButton()
         }

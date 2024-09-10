@@ -10,7 +10,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -21,14 +20,34 @@ import com.flipperdevices.archive.model.CategoryType
 import com.flipperdevices.archive.shared.composable.ComposableKeyCard
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType.Companion.colorByFlipperKeyType
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.ktx.OrangeAppBar
+import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
+import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
+import com.flipperdevices.rootscreen.api.LocalDeeplinkHandler
 import kotlinx.collections.immutable.ImmutableList
+
+@Composable
+fun AddRemoteEndBlock(modifier: Modifier = Modifier) {
+    val deeplinkHandler = LocalDeeplinkHandler.current
+    Text(
+        text = stringResource(R.string.add_remote),
+        style = LocalTypography.current.buttonB14,
+        color = LocalPalletV2.current.text.title.blackOnColor,
+        modifier = modifier
+            .padding(horizontal = 14.dp)
+            .clickableRipple {
+                deeplinkHandler.handleDeeplink(Deeplink.BottomBar.ArchiveTab.RemoteControls)
+            }
+    )
+}
 
 @Composable
 fun ComposableCategory(
@@ -36,6 +55,7 @@ fun ComposableCategory(
     categoryState: CategoryState,
     synchronizationState: SynchronizationState,
     synchronizationUiApi: SynchronizationUiApi,
+    showRemoteControls: Boolean,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
     onOpenKeyScreen: (FlipperKeyPath) -> Unit
@@ -43,7 +63,12 @@ fun ComposableCategory(
     Column(modifier = modifier) {
         OrangeAppBar(
             title = categoryType.fileType.humanReadableName,
-            onBack = onBack
+            onBack = onBack,
+            endBlock = {
+                if (categoryType.fileType == FlipperKeyType.INFRARED && showRemoteControls) {
+                    AddRemoteEndBlock()
+                }
+            }
         )
         ComposableCategoryContent(
             categoryType = categoryType,
@@ -115,7 +140,7 @@ private fun CategoryList(
                     is CategoryType.ByFileType -> colorByFlipperKeyType(categoryType.fileType)
                     CategoryType.Deleted -> LocalPallet.current.keyDeleted
                 },
-                onCardClicked = {
+                onCardClick = {
                     onOpenKeyScreen(flipperKey.getKeyPath())
                 }
             )

@@ -6,7 +6,7 @@ import com.flipperdevices.buildlogic.SourceInstall
 
 plugins {
     id("flipper.android-app")
-    id("flipper.anvil")
+    id("flipper.anvil.kapt")
     id("kotlin-kapt")
     alias(libs.plugins.google.gms)
     alias(libs.plugins.baselineprofile)
@@ -41,6 +41,26 @@ dependencies {
 
     implementation(projects.components.filemanager.api)
     implementation(projects.components.filemanager.impl)
+
+    implementation(projects.components.remoteControls.apiBackend)
+    implementation(projects.components.remoteControls.coreModel)
+    implementation(projects.components.remoteControls.coreUi)
+    implementation(projects.components.remoteControls.brands.api)
+    implementation(projects.components.remoteControls.brands.impl)
+    implementation(projects.components.remoteControls.categories.api)
+    implementation(projects.components.remoteControls.categories.impl)
+    implementation(projects.components.remoteControls.grid.createControl.api)
+    implementation(projects.components.remoteControls.grid.createControl.impl)
+    implementation(projects.components.remoteControls.grid.main.api)
+    implementation(projects.components.remoteControls.grid.main.impl)
+    implementation(projects.components.remoteControls.grid.remote.api)
+    implementation(projects.components.remoteControls.grid.remote.impl)
+    implementation(projects.components.remoteControls.grid.saved.api)
+    implementation(projects.components.remoteControls.grid.saved.impl)
+    implementation(projects.components.remoteControls.main.api)
+    implementation(projects.components.remoteControls.main.impl)
+    implementation(projects.components.remoteControls.setup.api)
+    implementation(projects.components.remoteControls.setup.impl)
 
     implementation(projects.components.screenstreaming.api)
     implementation(projects.components.screenstreaming.impl)
@@ -147,8 +167,6 @@ dependencies {
 
     implementation(projects.components.nfc.mfkey32.api)
     implementation(projects.components.nfc.mfkey32.screen)
-    implementation(projects.components.nfc.attack.api)
-    implementation(projects.components.nfc.attack.impl)
     implementation(projects.components.nfc.tools.api)
     implementation(projects.components.nfc.tools.impl)
 
@@ -250,7 +268,6 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.work.ktx)
-    implementation(libs.ktorfit.lib)
 
     implementation(libs.bundles.decompose)
 

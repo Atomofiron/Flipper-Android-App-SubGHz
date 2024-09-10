@@ -5,6 +5,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.flipperdevices.bridge.dao.api.FapHubHideItemApi
+import com.flipperdevices.core.pager.distinctBy
 import com.flipperdevices.core.pager.loadingPagingDataFlow
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
@@ -16,6 +17,7 @@ import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
@@ -34,14 +36,14 @@ class FapHubCategoryViewModel @AssistedInject constructor(
     private val sortStateFlow = MutableStateFlow(SortType.UPDATE_AT_DESC)
 
     init {
-        dataStoreSettings.data
-            .onEach {
-                sortStateFlow.emit(it.selectedCatalogSort.toSortType())
-            }.launchIn(viewModelScope)
+        dataStoreSettings.data.onEach {
+            sortStateFlow.emit(it.selected_catalog_sort.toSortType())
+        }.launchIn(viewModelScope)
     }
 
     fun getSortTypeFlow() = sortStateFlow.asStateFlow()
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private val faps = combine(
         sortStateFlow,
         targetProviderApi.getFlipperTarget(),
@@ -55,16 +57,16 @@ class FapHubCategoryViewModel @AssistedInject constructor(
         ) {
             FapsCategoryPagingSource(fapNetworkApi, category, sortType, target, hiddenItems)
         }.flow
-    }.flatMapLatest { it }.cachedIn(viewModelScope)
+    }.flatMapLatest { it }.distinctBy { it.id }.cachedIn(viewModelScope)
 
     fun getFapsFlow() = faps
 
     fun onSelectSortType(sortType: SortType) {
         viewModelScope.launch {
             dataStoreSettings.updateData {
-                it.toBuilder()
-                    .setSelectedCatalogSort(sortType.toSelectedSortType())
-                    .build()
+                it.copy(
+                    selected_catalog_sort = sortType.toSelectedSortType()
+                )
             }
         }
     }

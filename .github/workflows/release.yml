@@ -7,9 +7,13 @@ on:
       - 'rc'
 
 jobs:
+  validate_gradle_wrapper:
+    name: "Validate gradle wrapper"
+    uses: ./.github/workflows/call-validate-gradle-wrapper.yml
   build_number:
     name: Generate build number
     runs-on: ubuntu-latest
+    needs: [ validate_gradle_wrapper ]
     outputs:
       number: ${{ steps.build_out.outputs.number }}
       number_wearos: ${{ steps.wearos_out.outputs.number_wearos }}
@@ -46,15 +50,15 @@ jobs:
       matrix:
         target: [ "gh_gms", "gh_nogms", "googleplay" ]
     steps:
-      - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
           submodules: 'recursive'
       - name: Set up JDK 1.17
-        uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4
+        uses: actions/setup-java@6a0805fcefea3d4657a47ac4c165951e33482018 # v4
         with:
           distribution: 'temurin'
           java-version: '17'
-      - uses: actions/download-artifact@master
+      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16
         name: "Download ${{ needs.create_release_baseline.outputs.BUILD_VARIANT_NAME }} baseline file"
         with:
           name: ${{ needs.create_release_baseline.outputs.BASELINE_FILE_ID }}
@@ -106,7 +110,7 @@ jobs:
           cp instances/android/app/build/outputs/mapping/release/mapping.txt artifacts/mapping-${{ matrix.target }}.txt
           echo "path=artifacts/" >> $GITHUB_OUTPUT
       - name: Upload Artifacts
-        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4
+        uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a # v4
         with:
           name: artifacts-${{ matrix.target }}
           path: ${{ steps.artifacts_copy.outputs.path }}
@@ -115,11 +119,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: build_number
     steps:
-      - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
           submodules: 'recursive'
       - name: Set up JDK 1.17
-        uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4
+        uses: actions/setup-java@6a0805fcefea3d4657a47ac4c165951e33482018 # v4
         with:
           distribution: 'temurin'
           java-version: '17'
@@ -168,7 +172,7 @@ jobs:
           cp instances/wearable/build/outputs/mapping/release/mapping.txt artifacts/mapping-wearos.txt
           echo "path=artifacts/" >> $GITHUB_OUTPUT
       - name: Upload Artifacts
-        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4
+        uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a # v4
         with:
           name: artifacts-wearos
           path: ${{ steps.artifacts_copy.outputs.path }}
@@ -178,25 +182,25 @@ jobs:
     if: ${{ github.ref == 'refs/heads/master' }}
     needs: [ build_release, build_release_gms_wearos, build_number ]
     steps:
-      - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
           submodules: 'recursive'
-      - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
+      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
         id: download-gh_gms
         with:
           name: artifacts-gh_gms
           path: download/gh_gms
-      - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
+      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
         id: download-gh_nogms
         with:
           name: artifacts-gh_nogms
           path: download/gh_nogms
-      - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
+      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
         id: download-googleplay
         with:
           name: artifacts-googleplay
           path: download/googleplay
-      - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
+      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
         id: download-wearos
         with:
           name: artifacts-wearos
@@ -243,7 +247,7 @@ jobs:
           mv ${{ steps.artifacts_copy.outputs.path }}/flipper-zero-gh_nogms.apk ${{ steps.artifacts_copy.outputs.path }}/flipper-zero-nogms-${{ steps.vars.outputs.major_version }}.${{ steps.vars.outputs.minor_version }}.apk
       - name: Create Release
         id: create_release
-        uses: softprops/action-gh-release@69320dbe05506a9a39fc8ae11030b214ec2d1f87 # v2
+        uses: softprops/action-gh-release@c062e08bd532815e2082a85e87e3ef29c3e6d191 # v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -262,10 +266,10 @@ jobs:
     needs: [ build_release ]
     if: ${{ github.ref == 'refs/heads/master' }}
     steps:
-      - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
           submodules: 'recursive'
-      - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
+      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
         id: download-googleplay
         with:
           name: artifacts-googleplay
@@ -285,10 +289,10 @@ jobs:
     needs: [ build_release_gms_wearos ]
     if: ${{ github.ref == 'refs/heads/master' }}
     steps:
-      - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
           submodules: 'recursive'
-      - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
+      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
         id: download-wearos
         with:
           name: artifacts-wearos
