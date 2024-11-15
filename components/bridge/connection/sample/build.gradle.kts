@@ -1,7 +1,6 @@
 plugins {
     id("flipper.android-app")
-    id("flipper.anvil.kapt")
-    id("kotlin-kapt")
+    id("flipper.anvil.entrypoint")
     id("kotlinx-serialization")
 }
 
@@ -26,6 +25,7 @@ dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
     implementation(projects.components.core.preference)
+    implementation(projects.components.core.storage)
 
     implementation(projects.components.bridge.connection.transport.ble.api)
     implementation(projects.components.bridge.connection.transport.ble.impl)
@@ -47,6 +47,7 @@ dependencies {
     implementation(projects.components.bridge.connection.feature.getinfo.impl)
     implementation(projects.components.bridge.connection.feature.lagsdetector.api)
     implementation(projects.components.bridge.connection.feature.lagsdetector.impl)
+    implementation(projects.components.bridge.connection.feature.actionnotifier.api)
     implementation(projects.components.bridge.connection.feature.protocolversion.api)
     implementation(projects.components.bridge.connection.feature.protocolversion.impl)
     implementation(projects.components.bridge.connection.feature.provider.api)
@@ -61,6 +62,8 @@ dependencies {
     implementation(projects.components.bridge.connection.feature.rpcstats.impl)
     implementation(projects.components.bridge.connection.feature.serialspeed.api)
     implementation(projects.components.bridge.connection.feature.serialspeed.impl)
+    implementation(projects.components.bridge.connection.feature.storage.api)
+    implementation(projects.components.bridge.connection.feature.storage.impl)
     implementation(projects.components.bridge.connection.feature.storageinfo.api)
     implementation(projects.components.bridge.connection.feature.storageinfo.impl)
 
@@ -73,11 +76,31 @@ dependencies {
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.connection.pbutils)
 
+    implementation(projects.components.filemngr.main.api)
+    implementation(projects.components.filemngr.main.impl)
+    implementation(projects.components.filemngr.listing.api)
+    implementation(projects.components.filemngr.listing.impl)
+    implementation(projects.components.filemngr.upload.api)
+    implementation(projects.components.filemngr.upload.impl)
+    implementation(projects.components.filemngr.search.api)
+    implementation(projects.components.filemngr.search.impl)
+    implementation(projects.components.filemngr.editor.api)
+    implementation(projects.components.filemngr.editor.impl)
+
+    implementation(projects.components.newfilemanager.api)
+    implementation(projects.components.newfilemanager.impl)
+
+    implementation(projects.components.keyparser.api)
+    implementation(projects.components.keyparser.impl)
+
+    implementation(projects.components.deeplink.api)
+    implementation(projects.components.deeplink.impl)
+
     implementation(libs.appcompat)
 
     // Dagger deps
     implementation(libs.dagger)
-    kapt(libs.dagger.kapt)
+    commonKsp(libs.dagger.compiler)
 
     implementation(libs.timber)
 

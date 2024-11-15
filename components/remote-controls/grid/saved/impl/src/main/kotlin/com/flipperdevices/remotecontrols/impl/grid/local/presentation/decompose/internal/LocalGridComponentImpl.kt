@@ -55,7 +55,8 @@ class LocalGridComponentImpl @AssistedInject constructor(
                     flipperDialog = dispatchState.toDialogType(),
                     emulatedKey = (dispatchState as? DispatchSignalApi.State.Emulating)?.ifrKeyIdentifier,
                     connectionState = connectionState,
-                    keyPath = gridState.keyPath
+                    keyPath = gridState.keyPath,
+                    isFavorite = gridState.isFavorite
                 )
 
                 LocalGridViewModel.State.Loading -> LocalGridComponent.Model.Loading
@@ -63,21 +64,36 @@ class LocalGridComponentImpl @AssistedInject constructor(
         }
     ).stateIn(coroutineScope, SharingStarted.Eagerly, LocalGridComponent.Model.Loading)
 
-    override fun onButtonClick(identifier: IfrKeyIdentifier) {
-        val gridLoadedState =
-            (localGridViewModel.state.value as? LocalGridViewModel.State.Loaded) ?: return
-        val remotes = gridLoadedState.remotes
+    private fun onButtonClick(identifier: IfrKeyIdentifier, isOneTime: Boolean) {
+        val gridLoadedState = (localGridViewModel.state.value as? LocalGridViewModel.State.Loaded)
+            ?: return
 
         dispatchSignalApi.dispatch(
             identifier = identifier,
-            remotes = remotes,
-            ffPath = gridLoadedState.keyPath.path
+            remotes = gridLoadedState.remotes,
+            ffPath = gridLoadedState.keyPath.path,
+            isOneTime = isOneTime
         )
     }
 
-    override fun onRename(onEndAction: (FlipperKeyPath) -> Unit) = localGridViewModel.onRename(onEndAction)
+    override fun onButtonClick(identifier: IfrKeyIdentifier) {
+        onButtonClick(identifier, true)
+    }
+
+    override fun onButtonLongClick(identifier: IfrKeyIdentifier) {
+        onButtonClick(identifier, false)
+    }
+
+    override fun onButtonRelease() {
+        dispatchSignalApi.stopEmulate()
+    }
+
+    override fun onRename(onEndAction: (FlipperKeyPath) -> Unit) =
+        localGridViewModel.onRename(onEndAction)
 
     override fun onDelete(onEndAction: () -> Unit) = localGridViewModel.onDelete(onEndAction)
+
+    override fun toggleFavorite() = localGridViewModel.toggleFavorite()
 
     override fun pop() = onBack.invoke()
 

@@ -14,6 +14,7 @@ import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.backhandler.BackCallback
+import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.flipperdevices.archive.api.ArchiveDecomposeComponent
 import com.flipperdevices.bottombar.api.BottomBarDecomposeComponent
 import com.flipperdevices.bottombar.handlers.ResetTabDecomposeHandler
@@ -24,6 +25,7 @@ import com.flipperdevices.bottombar.impl.model.toBottomBarTabEnum
 import com.flipperdevices.bottombar.impl.model.toConfig
 import com.flipperdevices.bottombar.impl.viewmodel.BottomBarViewModel
 import com.flipperdevices.bottombar.impl.viewmodel.InAppNotificationViewModel
+import com.flipperdevices.bottombar.impl.viewmodel.SelectedTabViewModel
 import com.flipperdevices.connection.api.ConnectionApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.preference.pb.Settings
@@ -37,6 +39,7 @@ import com.flipperdevices.notification.api.FlipperAppNotificationDialogApi
 import com.flipperdevices.toolstab.api.ToolsDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.findChildByConfig
 import com.flipperdevices.ui.decompose.findComponentByConfig
 import com.flipperdevices.ui.decompose.popOr
 import com.flipperdevices.unhandledexception.api.UnhandledExceptionRenderApi
@@ -62,13 +65,22 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
     private val unhandledExceptionRendererApi: UnhandledExceptionRenderApi,
     private val appNotificationApi: FlipperAppNotificationDialogApi,
     private val bottomBarViewModelProvider: Provider<BottomBarViewModel>,
+    private val selectedTabViewModelProvider: Provider<SelectedTabViewModel>,
     private val inAppNotificationViewModelFactory: InAppNotificationViewModel.Factory
 ) : BottomBarDecomposeComponent<BottomBarTabConfig>(), ComponentContext by componentContext {
+
     override val stack: Value<ChildStack<BottomBarTabConfig, DecomposeComponent>> =
         childStack(
             source = navigation,
             serializer = BottomBarTabConfig.serializer(),
-            initialConfiguration = BottomBarTabConfig.getInitialConfig(settingsDataStore, deeplink),
+            initialConfiguration = BottomBarTabConfig.getInitialConfig(
+                getSavedTab = {
+                    instanceKeeper.getOrCreate("bbdc_st_vm") {
+                        selectedTabViewModelProvider.get()
+                    }.getSelectedTab()
+                },
+                deeplink = deeplink
+            ),
             childFactory = ::child,
         )
 
@@ -137,7 +149,8 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
         is BottomBarTabConfig.Tools -> toolsScreenFactory(
             componentContext = componentContext,
             deeplink = config.deeplink,
-            onBack = { navigation.popOr(onBack::invoke) }
+            onBack = { navigation.popOr(onBack::invoke) },
+            onDeeplink = ::handleDeeplink
         )
 
         is BottomBarTabConfig.Apps -> fapHubScreenFactory(
@@ -174,10 +187,12 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
     override fun handleDeeplink(deeplink: Deeplink.BottomBar) {
         when (deeplink) {
             is Deeplink.BottomBar.ArchiveTab -> {
-                val instance = stack.findComponentByConfig(BottomBarTabConfig.Archive::class)
+                val child = stack.findChildByConfig(BottomBarTabConfig.Archive::class)
+                val instance = child?.instance
                 if (instance == null || instance !is ArchiveDecomposeComponent<*>) {
                     navigation.bringToFront(BottomBarTabConfig.Archive(deeplink))
                 } else {
+                    navigation.bringToFront(child.configuration)
                     instance.handleDeeplink(deeplink)
                 }
             }

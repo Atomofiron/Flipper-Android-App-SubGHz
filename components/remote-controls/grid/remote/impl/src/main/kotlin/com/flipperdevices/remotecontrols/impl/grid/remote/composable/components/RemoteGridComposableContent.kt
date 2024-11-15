@@ -4,24 +4,14 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.theme.LocalPallet
-import com.flipperdevices.core.ui.theme.LocalPalletV2
-import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.ifrmvp.core.ui.layout.shared.ErrorComposable
+import com.flipperdevices.faphub.errors.api.FapErrorSize
+import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
+import com.flipperdevices.ifrmvp.core.ui.button.core.ButtonClickEvent
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.GridPagesContent
 import com.flipperdevices.remotecontrols.api.FlipperDispatchDialogApi
-import com.flipperdevices.remotecontrols.grid.remote.impl.R
 import com.flipperdevices.remotecontrols.impl.grid.remote.composable.util.contentKey
 import com.flipperdevices.remotecontrols.impl.grid.remote.presentation.decompose.RemoteGridComponent
 
@@ -29,6 +19,7 @@ import com.flipperdevices.remotecontrols.impl.grid.remote.presentation.decompose
 internal fun RemoteGridComposableContent(
     remoteGridComponent: RemoteGridComponent,
     flipperDispatchDialogApi: FlipperDispatchDialogApi,
+    errorsRenderer: FapHubComposableErrorsRenderer,
     model: RemoteGridComponent.Model,
     modifier: Modifier = Modifier
 ) {
@@ -39,10 +30,12 @@ internal fun RemoteGridComposableContent(
         contentKey = { model.contentKey }
     ) { animatedModel ->
         when (animatedModel) {
-            RemoteGridComponent.Model.Error -> {
-                ErrorComposable(
-                    desc = stringResource(R.string.empty_page),
-                    onReload = remoteGridComponent::tryLoad
+            is RemoteGridComponent.Model.Error -> {
+                errorsRenderer.ComposableThrowableError(
+                    throwable = animatedModel.throwable,
+                    onRetry = remoteGridComponent::tryLoad,
+                    fapErrorSize = FapErrorSize.FULLSCREEN,
+                    modifier = Modifier.fillMaxSize()
                 )
             }
 
@@ -53,8 +46,20 @@ internal fun RemoteGridComposableContent(
                 )
                 GridPagesContent(
                     pagesLayout = animatedModel.pagesLayout,
-                    onButtonClick = { _, keyIdentifier ->
-                        remoteGridComponent.onButtonClick(keyIdentifier)
+                    onButtonClick = { _, clickType, keyIdentifier ->
+                        when (clickType) {
+                            ButtonClickEvent.SINGLE_CLICK -> {
+                                remoteGridComponent.onButtonClick(keyIdentifier)
+                            }
+
+                            ButtonClickEvent.HOLD -> {
+                                remoteGridComponent.onButtonLongClick(keyIdentifier)
+                            }
+
+                            ButtonClickEvent.RELEASE -> {
+                                remoteGridComponent.onButtonRelease()
+                            }
+                        }
                     },
                     onReload = remoteGridComponent::tryLoad,
                     emulatedKeyIdentifier = animatedModel.emulatedKey,
@@ -64,22 +69,7 @@ internal fun RemoteGridComposableContent(
             }
 
             is RemoteGridComponent.Model.Loading -> {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(24.dp),
-                        color = LocalPallet.current.accentSecond,
-                        strokeWidth = 2.dp
-                    )
-                    Text(
-                        text = stringResource(R.string.loading_remote),
-                        style = LocalTypography.current.bodySB14,
-                        color = LocalPalletV2.current.text.body.whiteOnColor
-                    )
-                }
+                RemoteGridComposableLoadingContent()
             }
         }
     }

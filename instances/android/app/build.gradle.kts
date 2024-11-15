@@ -6,8 +6,7 @@ import com.flipperdevices.buildlogic.SourceInstall
 
 plugins {
     id("flipper.android-app")
-    id("flipper.anvil.kapt")
-    id("kotlin-kapt")
+    id("flipper.anvil.entrypoint")
     alias(libs.plugins.google.gms)
     alias(libs.plugins.baselineprofile)
 }
@@ -19,6 +18,7 @@ dependencies {
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.log)
     implementation(projects.components.core.preference)
+    implementation(projects.components.core.storage)
     implementation(projects.components.core.activityholder)
     implementation(projects.components.core.permission.api)
     implementation(projects.components.core.permission.impl)
@@ -43,16 +43,13 @@ dependencies {
     implementation(projects.components.filemanager.impl)
 
     implementation(projects.components.remoteControls.apiBackend)
+    implementation(projects.components.remoteControls.apiBackendFlipper)
     implementation(projects.components.remoteControls.coreModel)
     implementation(projects.components.remoteControls.coreUi)
     implementation(projects.components.remoteControls.brands.api)
     implementation(projects.components.remoteControls.brands.impl)
     implementation(projects.components.remoteControls.categories.api)
     implementation(projects.components.remoteControls.categories.impl)
-    implementation(projects.components.remoteControls.grid.createControl.api)
-    implementation(projects.components.remoteControls.grid.createControl.impl)
-    implementation(projects.components.remoteControls.grid.main.api)
-    implementation(projects.components.remoteControls.grid.main.impl)
     implementation(projects.components.remoteControls.grid.remote.api)
     implementation(projects.components.remoteControls.grid.remote.impl)
     implementation(projects.components.remoteControls.grid.saved.api)
@@ -279,7 +276,7 @@ dependencies {
     implementation(libs.ktx.activity)
 
     implementation(libs.dagger)
-    kapt(libs.dagger.kapt)
+    commonKsp(libs.dagger.compiler)
 
     implementation(libs.timber)
 

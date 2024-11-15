@@ -1,7 +1,6 @@
 package com.flipperdevices.bridge.synchronization.impl.repository.favorites
 
 import android.content.Context
-import android.os.Build
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.model.FlipperFile
@@ -16,7 +15,8 @@ import com.flipperdevices.bridge.synchronization.impl.repository.manifest.Manife
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestRepositoryImpl
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestStorage
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestStorageImpl
-import com.flipperdevices.bridge.synchronization.impl.utils.progressWrapperTrackerStub
+import com.flipperdevices.bridge.synchronization.impl.utils.detailedProgressWrapperTrackerStub
+import com.flipperdevices.core.buildkonfig.BuildKonfig
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -31,7 +31,7 @@ import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
-@Config(sdk = [Build.VERSION_CODES.TIRAMISU])
+@Config(sdk = [BuildKonfig.ROBOELECTRIC_SDK_VERSION])
 class FavoriteSynchronizationTestSingle {
     @get:Rule
     val folder = TemporaryFolder()
@@ -115,7 +115,7 @@ class FavoriteSynchronizationTestSingle {
             )
         }
 
-        underTest.syncFavorites(progressWrapperTrackerStub())
+        underTest.syncFavorites(detailedProgressWrapperTrackerStub())
 
         coVerify(exactly = 0) {
             favoritesRepository.applyDiff(

@@ -15,8 +15,11 @@ import kotlinx.coroutines.flow.StateFlow
 interface LocalGridComponent {
     fun model(coroutineScope: CoroutineScope): StateFlow<Model>
     fun onButtonClick(identifier: IfrKeyIdentifier)
+    fun onButtonLongClick(identifier: IfrKeyIdentifier)
+    fun onButtonRelease()
     fun onRename(onEndAction: (FlipperKeyPath) -> Unit)
     fun onDelete(onEndAction: () -> Unit)
+    fun toggleFavorite()
     fun pop()
     fun dismissDialog()
 
@@ -28,7 +31,8 @@ interface LocalGridComponent {
             val flipperDialog: FlipperDispatchDialogApi.DialogType? = null,
             val emulatedKey: IfrKeyIdentifier?,
             val connectionState: InfraredEmulateState,
-            val keyPath: FlipperKeyPath
+            val keyPath: FlipperKeyPath,
+            val isFavorite: Boolean
         ) : Model {
             val isSynchronizing = listOf(
                 InfraredEmulateState.SYNCING,

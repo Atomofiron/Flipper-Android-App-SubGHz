@@ -11,6 +11,8 @@
     <string name="app_title">App</string>
     <string name="app_notification_title">Push Notifications</string>
     <string name="app_notification_desc">Notify about new firmware releases</string>
+    <string name="app_vibration_title">Vibration</string>
+    <string name="app_vibration_desc">Vibration feedback in the app</string>
 
     <string name="debug_options">Debug Options</string>
     <string name="debug_options_desc">Features for developers and testing</string>
@@ -38,7 +40,6 @@
     <string name="experimental_options_desc">Unstable and untested features</string>
     <string name="experimental_file_manager">File Manager</string>
     <string name="experimental_file_manager_desc">Navigate through Flipper files</string>
-    <string name="experimental_remote_control">Remote controls</string>
     <string name="experimental_screen_streaming">Screen Streaming</string>
     <string name="experimental_screen_streaming_desc">Control Flipper via phone</string>
     <string name="experimental_application_catalog">Enable Apps in Hub</string>

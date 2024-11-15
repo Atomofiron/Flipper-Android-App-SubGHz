@@ -1,4 +1,3 @@
-
 import com.android.build.gradle.BaseExtension
 import com.flipperdevices.buildlogic.ApkConfig
 import com.flipperdevices.buildlogic.ApkConfig.IS_SENTRY_PUBLISH
@@ -65,3 +64,5 @@ configure<SentryPluginExtension> {
 
     autoInstallation.enabled.set(false)
 }
+
+includeCommonKspConfigurationTo("ksp")
