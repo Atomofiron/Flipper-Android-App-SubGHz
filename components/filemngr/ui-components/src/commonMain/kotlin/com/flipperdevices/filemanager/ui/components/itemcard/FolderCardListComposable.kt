@@ -37,6 +37,7 @@ fun SwipeToDismissFolderCardListComposable(
     painter: Painter,
     title: String,
     subtitle: String,
+    isSubtitleLoading: Boolean,
     selectionState: ItemUiSelectionState,
     canDeleteFiles: Boolean,
     onClick: () -> Unit,
@@ -63,6 +64,7 @@ fun SwipeToDismissFolderCardListComposable(
                 onMoreClick = onMoreClick,
                 onClick = onClick,
                 iconTint = iconTint,
+                isSubtitleLoading = isSubtitleLoading
             )
         },
         actions = {
@@ -104,11 +106,12 @@ fun FolderCardListComposable(
     painter: Painter,
     title: String,
     subtitle: String,
+    isSubtitleLoading: Boolean,
     selectionState: ItemUiSelectionState,
     onClick: () -> Unit,
-    onCheckChange: (Boolean) -> Unit,
-    onMoreClick: () -> Unit,
     modifier: Modifier = Modifier,
+    onCheckChange: ((Boolean) -> Unit)? = null,
+    onMoreClick: (() -> Unit)? = null,
     iconTint: Color = Color.Unspecified,
     showEndBox: Boolean = true
 ) {
@@ -138,11 +141,14 @@ fun FolderCardListComposable(
                 horizontalAlignment = Alignment.Start
             ) {
                 ItemCardTitle(title)
-                ItemCardSubtitle(subtitle)
+                ItemCardSubtitle(
+                    text = subtitle,
+                    isLoading = isSubtitleLoading
+                )
             }
         }
 
-        if (showEndBox) {
+        if (showEndBox && onCheckChange != null && onMoreClick != null) {
             ItemCardEndBox(
                 selectionState = selectionState,
                 onCheckChange = onCheckChange,
